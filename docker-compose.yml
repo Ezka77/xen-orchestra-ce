@@ -1,0 +1,20 @@
+version: '2'
+services:
+    orchestra:
+        build: .
+        image: xen-orchestra-ce
+        ports:
+            - "8000:80"
+        depends_on:
+            - redis
+        environment:
+            - DEBUG=xo:main
+        volumes:
+            - xo-storage:/storage
+    redis:
+        image: redis
+        volumes:
+            - xo-storage:/var/lib/redis
+volumes:
+    xo-storage: 
+
