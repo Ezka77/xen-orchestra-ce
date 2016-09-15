@@ -1,5 +1,7 @@
 FROM debian:jessie
 
+LABEL xo-server=5.2.3 xo-web=5.2.1
+
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN useradd -d /app -r app && \
@@ -13,12 +15,12 @@ WORKDIR /app
 RUN apt-get -qq update && \
     apt-get -qq install --no-install-recommends \
         ca-certificates apt-transport-https curl libpng-dev git python-minimal && \
-        apt-get autoremove -qq && \
-        apt-get clean && \
-        rm -rf /usr/share/doc /usr/share/man /var/log/* /tmp/* &&\
-        curl -o /usr/local/bin/n \
-            https://raw.githubusercontent.com/visionmedia/n/master/bin/n && \
-        chmod +x /usr/local/bin/n
+    apt-get autoremove -qq && \
+    apt-get clean && \
+    rm -rf /usr/share/doc /usr/share/man /var/log/* /tmp/* &&\
+    curl -o /usr/local/bin/n \
+        https://raw.githubusercontent.com/visionmedia/n/master/bin/n && \
+    chmod +x /usr/local/bin/n
 
 # Clone repos
 RUN git clone -b stable http://github.com/vatesfr/xo-server && \
