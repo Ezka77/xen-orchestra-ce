@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-LABEL xo-server=5.2.3 xo-web=5.2.1
+LABEL xo-server=5.2.5 xo-web=5.2.5
 
 ENV DEBIAN_FRONTEND noninteractive
 
