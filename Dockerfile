@@ -27,7 +27,7 @@ RUN git clone -b stable http://github.com/vatesfr/xo-server && \
     git clone -b stable http://github.com/vatesfr/xo-web && \
     rm -rf xo-server/.git xo-web/.git xo-server/sample.config.yaml
 
-# last requirements & build & cleanup
+# build requirements & build & cleanup
 RUN apt-get -qq install --no-install-recommends gcc g++ make python && \
     n lts && npm i -g npm &&\
     cd /app/xo-server && npm install && npm run build &&\

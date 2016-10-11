@@ -102,5 +102,5 @@ redis:
 #
 # Default: '/var/lib/xo-server/data'
 #datadir: '/var/lib/xo-server/data'
-datadir: '/storage/xo-server/data'
+datadir: '/storage/data'
 

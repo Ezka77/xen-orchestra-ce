@@ -12,5 +12,6 @@ services:
             - ./volumes/xo-server:/storage
     redis:
         image: redis:alpine
+        command: redis-server --appendonly yes
         volumes:
-            - ./volumes/redis:/var/lib/redis
+            - ./volumes/redis:/data
