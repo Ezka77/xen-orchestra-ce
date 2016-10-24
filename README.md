@@ -3,13 +3,13 @@ Docker &amp; docker-compose files to deploy Xen Orchestra Community Edition (ie:
 
 See https://xen-orchestra.com for information on Xen Orchestra
 
-## Running the app
-
+## Running the container
 
 ### From docker repo
 
 The most simple way is to use docker-compose. Redis is not in this docker, so we
-need to connect XOA to a Redis database.
+need to connect XOA-CE to a Redis database, the docker-compose file in the github
+repos will take care of this and assure persistance.
 
 ```
 git clone https://github.com/Ezka77/xen-orchestra-ce.git
@@ -18,7 +18,9 @@ docker-compose up
 
 Xen Orchestra should be available on: http://localhost:8000
 
+## Versions
 
+Should follow xo-server and xo-web stable version.
 
 ## Support
 
