@@ -8,6 +8,8 @@ services:
             - redis
         environment:
             - DEBUG=xo:main
+            - NODE_ENV=production
+            - XOA_PLAN=5
         volumes:
             - ./volumes/xo-server:/storage
     redis:
