@@ -27,7 +27,7 @@
 # identifier.
 #
 # Default: undefined
-user: 'app'
+user: 'node'
 
 # Group to run XO-Server as.
 #
@@ -89,7 +89,7 @@ http:
 
   # List of files/directories which will be served.
   mounts:
-    '/': '/app/xo-web/dist/'
+    '/': '/home/node/xo-web/dist/'
 
 #=====================================================================
 

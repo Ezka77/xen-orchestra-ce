@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-# fix perms
-chown -R app:app /storage
+# storge directory and fix perms
+mkdir -p /storage 
+chown -R ${USER}:${USER} /storage
 
 # start App
-cd /app/xo-server
+cd ${USER_HOME}/xo-server
 exec "$@"
 
