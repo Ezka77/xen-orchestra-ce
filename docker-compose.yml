@@ -6,6 +6,10 @@ services:
             - "8000:80"
         depends_on:
             - redis
+        environment:
+            - DEBUG=xo:main
+            - NODE_ENV=production
+            - XOA_PLAN=5
         volumes:
             - ./volumes/xo-server:/storage
     redis:

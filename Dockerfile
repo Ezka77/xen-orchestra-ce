@@ -2,7 +2,7 @@ FROM node:6.10-alpine
 
 LABEL xo-server=5.6.4 xo-web=5.6.3
 
-ENV USER=node USER_HOME=/home/node NODE_ENV=production XOA_PLAN=5 DEBUG=xo:main
+ENV USER=node USER_HOME=/home/node XOA_PLAN=5 DEBUG=xo:main
 
 WORKDIR /home/node
 
