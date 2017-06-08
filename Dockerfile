@@ -1,6 +1,6 @@
 FROM node:6.10-alpine
 
-LABEL xo-server=5.9.3 xo-web=5.9.0
+LABEL xo-server=5.9.4 xo-web=5.9.1
 
 ENV USER=node USER_HOME=/home/node XOA_PLAN=5 DEBUG=xo:main
 
