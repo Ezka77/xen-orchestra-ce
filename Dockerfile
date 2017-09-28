@@ -1,8 +1,13 @@
 FROM node:6.10-alpine
 
-LABEL xo-server=5.12.1 xo-web=5.12.0
+LABEL org.label-schema.schema-version="1.0" \ 
+    org.label-schema.xo-server=5.12.1 \
+    org.label-schema.xo-web=5.12.0
 
-ENV USER=node USER_HOME=/home/node XOA_PLAN=5 DEBUG=xo:main
+ENV USER=node \
+    USER_HOME=/home/node \
+    XOA_PLAN=5 \
+    DEBUG=xo:main
 
 WORKDIR /home/node
 
@@ -26,3 +31,4 @@ EXPOSE 80
 
 ENTRYPOINT ["/xo-entry.sh"]
 CMD ["yarn", "start"]
+
