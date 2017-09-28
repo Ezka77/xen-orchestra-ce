@@ -1,4 +1,7 @@
 # xen-orchestra-ce
+
+[![](https://images.microbadger.com/badges/image/ezka77/xen-orchestra-ce.svg)](https://microbadger.com/images/ezka77/xen-orchestra-ce "Get your own image badge on microbadger.com")
+
 Docker &amp; docker-compose files to deploy Xen Orchestra Community Edition (ie: from source)
 
 See https://xen-orchestra.com for information on Xen Orchestra
