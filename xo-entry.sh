@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-# storge directory and fix perms
-mkdir -p /storage 
+# storage directory and fix perms
+mkdir -p /storage
 chown -R ${USER}:${USER} /storage
 
 # start App
