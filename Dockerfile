@@ -1,9 +1,7 @@
 FROM node:6.10-alpine
 
-LABEL org.label-schema.schema-version="1.0" \ 
-    org.label-schema.version=5.13 \
-    xo-server=5.13.0 \
-    xo-web=5.13.0
+LABEL xo-server=5.13.2 \
+         xo-web=5.13.1
 
 ENV USER=node \
     USER_HOME=/home/node \
