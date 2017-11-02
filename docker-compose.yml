@@ -4,7 +4,7 @@ services:
         image: ezka77/xen-orchestra-ce
         container_name: xoa
         ports:
-            - "8000:80"
+            - "8000:8000"
         depends_on:
             - redis
         environment:

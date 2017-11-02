@@ -1,7 +1,7 @@
 FROM node:6.10-alpine
 
-LABEL xo-server=5.13.2 \
-         xo-web=5.13.3
+LABEL xo-server=5.14.0 \
+         xo-web=5.14.0
 
 ENV USER=node \
     USER_HOME=/home/node \
@@ -11,7 +11,7 @@ ENV USER=node \
 WORKDIR /home/node
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache git python g++ make &&\
+    apk add --no-cache git python g++ make tini su-exec &&\
     git clone -b stable http://github.com/vatesfr/xo-server && \
     git clone -b stable http://github.com/vatesfr/xo-web && \
     rm -rf xo-server/.git xo-web/.git xo-server/sample.config.yaml &&\
@@ -24,10 +24,10 @@ RUN apk update && apk upgrade && \
 
 # configurations
 COPY xo-server.config.yaml /home/node/xo-server/.xo-server.yaml
-COPY xo-entry.sh /
+COPY xo-entry.sh /docker-entrypoint.sh
 
-EXPOSE 80
+EXPOSE 8000
 
-ENTRYPOINT ["/xo-entry.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/docker-entrypoint.sh"]
 CMD ["yarn", "start"]
 

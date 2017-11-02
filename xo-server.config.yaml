@@ -58,7 +58,7 @@ http:
       # Port on which the server is listening on.
       #
       # Default: undefined
-      port: 80
+      port: 8000
 
       # Instead of `host` and `port` a path to a UNIX socket may be
       # specified (overrides `host` and `port`).

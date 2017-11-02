@@ -7,5 +7,5 @@ chown -R ${USER}:${USER} /storage
 
 # start App
 cd ${USER_HOME}/xo-server
-exec "$@"
+exec su-exec ${USER} "$@"
 
