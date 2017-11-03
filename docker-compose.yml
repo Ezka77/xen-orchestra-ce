@@ -1,8 +1,9 @@
-version: '2'
+version: '3'
 services:
     orchestra:
+        restart: unless-stopped
         image: ezka77/xen-orchestra-ce
-        container_name: xoa
+        container_name: XO_server
         ports:
             - "8000:8000"
         depends_on:
@@ -14,7 +15,8 @@ services:
         volumes:
             - ./volumes/xo-server:/storage
     redis:
-        container_name: xoa-redis
+        restart: unless-stopped
+        container_name: XO_redis
         image: redis:alpine
         command: redis-server --appendonly yes
         volumes:

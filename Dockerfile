@@ -1,6 +1,6 @@
 FROM node:6.10-alpine
 
-LABEL xo-server=5.14.0 \
+LABEL xo-server=5.14.1 \
          xo-web=5.14.0
 
 ENV USER=node \
