@@ -14,6 +14,11 @@ services:
             - XOA_PLAN=5
         volumes:
             - ./volumes/xo-server:/storage
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1M"
+                max-file: "2"
     redis:
         restart: unless-stopped
         container_name: XO_redis
@@ -21,3 +26,8 @@ services:
         command: redis-server --appendonly yes
         volumes:
             - ./volumes/redis:/data
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1M"
+                max-file: "2"
