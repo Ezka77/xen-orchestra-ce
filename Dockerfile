@@ -1,7 +1,7 @@
 FROM node:6.10-alpine
 
-LABEL xo-server=5.15.5 \
-         xo-web=5.15.1
+LABEL xo-server=5.16.0 \
+         xo-web=5.16.0
 
 ENV USER=node \
     USER_HOME=/home/node \
