@@ -89,7 +89,7 @@ http:
 
   # List of files/directories which will be served.
   mounts:
-    '/': '/home/node/xo-web/dist/'
+    '/': '/home/node/xen-orchestra/packages/xo-web/dist/'
 
 #=====================================================================
 
