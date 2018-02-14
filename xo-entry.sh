@@ -6,6 +6,7 @@ mkdir -p /storage
 chown -R ${USER}:${USER} /storage
 
 # start App
-cd ${USER_HOME}/xo-server
-exec su-exec ${USER} "$@"
+cd ${USER_HOME}/xen-orchestra/packages/xo-server
+"$@"
+#exec su-exec ${USER} "$@"
 
