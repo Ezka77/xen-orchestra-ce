@@ -2,7 +2,7 @@ version: '3'
 services:
     orchestra:
         restart: unless-stopped
-        ezka77/xen-orchestra-ce
+        image: ezka77/xen-orchestra-ce
         container_name: XO_server
         ports:
             - "8000:8000"
