@@ -36,3 +36,12 @@ Should follow xo-server and xo-web stable version.
 * This Docker project is not supported by Xen-Orchestra or the parent company Vates.
 * Xen-Orchestra also provides a fully-supported, turn-key appliance, see: https://xen-orchestra.com/pricing.html
 
+
+# Develop
+
+For testing and debugging purpose:
+```
+docker-compose -f build.yml build
+docker-compose -f build.yml run orchestra /bin/bash
+```
+

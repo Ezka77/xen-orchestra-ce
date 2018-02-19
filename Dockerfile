@@ -13,6 +13,7 @@ WORKDIR /home/node
 RUN apk update && apk upgrade && \
     apk add --no-cache git python g++ make tini su-exec bash
 
+USER node
 RUN git clone -b master https://github.com/vatesfr/xen-orchestra/ &&\
     cd /home/node/xen-orchestra &&\
     yarn &&\
@@ -22,6 +23,7 @@ RUN git clone -b master https://github.com/vatesfr/xen-orchestra/ &&\
     #rm -rf xen-orchestra/.git xen-orchestra/sample.config.yaml
     #rm -rf /root/.cache /root/.node-gyp /root/.npm
 
+USER root
 # configurations
 COPY xo-server.config.yaml xen-orchestra/packages/xo-server/.xo-server.yaml
 COPY xo-entry.sh /docker-entrypoint.sh
