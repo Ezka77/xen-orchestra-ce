@@ -1,4 +1,4 @@
-FROM node:6.10-alpine
+FROM node:8-alpine
 
 LABEL xo-server=5.16.0 \
          xo-web=5.16.0
@@ -11,23 +11,22 @@ ENV USER=node \
 WORKDIR /home/node
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache git python g++ make tini su-exec &&\
-    git clone -b stable http://github.com/vatesfr/xo-server && \
-    git clone -b stable http://github.com/vatesfr/xo-web && \
-    rm -rf xo-server/.git xo-web/.git xo-server/sample.config.yaml &&\
-    yarn global add node-gyp && \
-    cd /home/node/xo-server && yarn && yarn run build && yarn clean &&\
-    cd /home/node/xo-web && yarn && yarn run build && yarn clean &&\
-    yarn global remove node-gyp &&\
-    apk del git python g++ make &&\
-    rm -rf /root/.cache /root/.node-gyp /root/.npm
+    apk add --no-cache git python g++ make tini su-exec bash
+
+RUN git clone -b master https://github.com/vatesfr/xen-orchestra/ &&\
+    cd /home/node/xen-orchestra &&\
+    yarn &&\
+    yarn build &&\
+    rm -rf xen-orchestra/.git
+    #apk del git python g++ make &&\
+    #rm -rf xen-orchestra/.git xen-orchestra/sample.config.yaml
+    #rm -rf /root/.cache /root/.node-gyp /root/.npm
 
 # configurations
-COPY xo-server.config.yaml /home/node/xo-server/.xo-server.yaml
+COPY xo-server.config.yaml xen-orchestra/packages/xo-server/.xo-server.yaml
 COPY xo-entry.sh /docker-entrypoint.sh
 
 EXPOSE 8000
 
 ENTRYPOINT ["/sbin/tini", "--", "/docker-entrypoint.sh"]
 CMD ["yarn", "start"]
-
