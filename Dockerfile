@@ -1,7 +1,25 @@
+FROM node:6-alpine as build_container
+
+WORKDIR /home/node
+
+RUN apk add --no-cache git python g++ make bash libc6-compat
+
+USER node
+
+RUN git clone -b master https://github.com/vatesfr/xen-orchestra/
+
+RUN cd /home/node/xen-orchestra &&\
+    yarn && yarn build
+
+RUN rm -rf xen-orchestra/.git
+
+
+
+
 FROM node:6-alpine
 
-LABEL xo-server=5.16.0 \
-         xo-web=5.16.0
+LABEL xo-server=5.16.1 \
+         xo-web=5.16.2
 
 ENV USER=node \
     USER_HOME=/home/node \
@@ -10,27 +28,16 @@ ENV USER=node \
 
 WORKDIR /home/node
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache git python g++ make tini su-exec bash util-linux lvm2 paxctl libc6-compat
+RUN apk add --no-cache tini su-exec bash util-linux lvm2
 
-USER node
-RUN git clone -b master https://github.com/vatesfr/xen-orchestra/
-
-RUN cd /home/node/xen-orchestra &&\
-    yarn &&\
-    yarn build
-    #rm -rf xen-orchestra/.git
-    #apk del git python g++ make &&\
-    #rm -rf xen-orchestra/.git xen-orchestra/sample.config.yaml
-    #rm -rf /root/.cache /root/.node-gyp /root/.npm
-
-USER root
 RUN mkdir -p /storage &&\
     chown node:node /storage
-## Segfault Fix ?
-#RUN paxctl -cm `which node`
+
+# Copy our App from the build container
+COPY --from=build_container /home/node/xen-orchestra /home/node/xen-orchestra
+
 # configurations
-COPY xo-server.config.yaml xen-orchestra/packages/xo-server/.xo-server.yaml
+COPY xo-server.config.yaml /home/node/xen-orchestra/packages/xo-server/.xo-server.yaml
 COPY xo-entry.sh /entrypoint.sh
 
 EXPOSE 8000
