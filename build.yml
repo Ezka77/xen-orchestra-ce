@@ -11,6 +11,8 @@ services:
             - DEBUG=xo:main
         volumes:
             - ./volumes/xo-server:/storage
+        security_opt:
+            - seccomp:unconfined
     redis:
         image: redis
         command: redis-server --appendonly yes
