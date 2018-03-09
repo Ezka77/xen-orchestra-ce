@@ -18,8 +18,8 @@ RUN rm -rf xen-orchestra/.git
 
 FROM node:6-alpine
 
-LABEL xo-server=5.16.1 \
-         xo-web=5.16.2
+LABEL xo-server=5.17.1 \
+         xo-web=5.17.1
 
 ENV USER=node \
     USER_HOME=/home/node \
