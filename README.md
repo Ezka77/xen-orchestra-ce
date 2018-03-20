@@ -37,7 +37,7 @@ Should follow xen-orchestra stable version.
 * Xen-Orchestra also provides a fully-supported, turn-key appliance, see: https://xen-orchestra.com/pricing.html
 
 
-# Develop
+# Develop & Tests
 
 For testing and debugging purpose:
 ```

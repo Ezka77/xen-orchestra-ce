@@ -6,7 +6,7 @@ RUN apk add --no-cache git python g++ make bash libc6-compat
 
 USER node
 
-RUN git clone -b master https://github.com/vatesfr/xen-orchestra/
+RUN git clone -b stable https://github.com/vatesfr/xen-orchestra/
 
 RUN cd /home/node/xen-orchestra &&\
     yarn && yarn build
@@ -18,8 +18,8 @@ RUN rm -rf xen-orchestra/.git
 
 FROM node:6-alpine
 
-LABEL xo-server=5.17.1 \
-         xo-web=5.17.1
+LABEL xo-server=5.17.4 \
+         xo-web=5.17.3
 
 ENV USER=node \
     USER_HOME=/home/node \
@@ -28,13 +28,29 @@ ENV USER=node \
 
 WORKDIR /home/node
 
-RUN apk add --no-cache tini su-exec bash util-linux lvm2
+RUN apk add --no-cache tini su-exec bash util-linux
 
 RUN mkdir -p /storage &&\
     chown node:node /storage
 
 # Copy our App from the build container
 COPY --from=build_container /home/node/xen-orchestra /home/node/xen-orchestra
+
+## Install plugins
+RUN npm install --global \
+    xo-server-auth-saml \
+    xo-server-auth-ldap \
+    xo-server-auth-github \
+    xo-server-auth-google \
+    xo-server-transport-email \
+    xo-server-transport-xmpp \
+    xo-server-transport-slack \
+    xo-server-transport-nagios \
+    xo-server-usage-report \
+    xo-server-backup-reports \
+    xo-server-load-balancer \
+    xo-import-servers-csv
+
 
 # configurations
 COPY xo-server.config.yaml /home/node/xen-orchestra/packages/xo-server/.xo-server.yaml
