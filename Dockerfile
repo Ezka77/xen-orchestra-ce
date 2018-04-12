@@ -1,3 +1,4 @@
+# Build container
 FROM node:6-alpine as build_container
 
 WORKDIR /home/node
@@ -6,7 +7,7 @@ RUN apk add --no-cache git python g++ make bash libc6-compat
 
 USER node
 
-RUN git clone -b stable https://github.com/vatesfr/xen-orchestra/
+RUN git clone -b master https://github.com/vatesfr/xen-orchestra/
 
 RUN cd /home/node/xen-orchestra &&\
     yarn && yarn build
@@ -15,11 +16,11 @@ RUN rm -rf xen-orchestra/.git
 
 
 
-
+# Runner container
 FROM node:6-alpine
 
-LABEL xo-server=5.17.4 \
-         xo-web=5.17.3
+LABEL xo-server=5.18.2 \
+         xo-web=5.18.1
 
 ENV USER=node \
     USER_HOME=/home/node \
@@ -36,7 +37,7 @@ RUN mkdir -p /storage &&\
 # Copy our App from the build container
 COPY --from=build_container /home/node/xen-orchestra /home/node/xen-orchestra
 
-## Install plugins
+## Install plugins from npm
 RUN npm install --global \
     xo-server-auth-saml \
     xo-server-auth-ldap \
