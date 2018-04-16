@@ -1,8 +1,10 @@
 # Xen-Orchestra-CE
 
-[![](https://img.shields.io/badge/xen--orchestra-5.17-green.svg)]() [![](https://images.microbadger.com/badges/image/ezka77/xen-orchestra-ce.svg)](https://microbadger.com/images/ezka77/xen-orchestra-ce "Get your own image badge on microbadger.com") [![Docker Pulls](https://img.shields.io/docker/pulls/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce) [![Docker Build Statu](https://img.shields.io/docker/build/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce)
+[![](https://img.shields.io/badge/xen--orchestra-5.18-green.svg)]() [![](https://images.microbadger.com/badges/image/ezka77/xen-orchestra-ce.svg)](https://microbadger.com/images/ezka77/xen-orchestra-ce "Get your own image badge on microbadger.com") [![Docker Pulls](https://img.shields.io/docker/pulls/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce) [![Docker Build Statu](https://img.shields.io/docker/build/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce)
 
-Docker &amp; docker-compose files to deploy Xen Orchestra Community Edition (ie: from source)
+Docker &amp; docker-compose files to deploy Xen Orchestra Community Edition (ie:
+from source). This image include some (all?) orchestra plugins (ex: auth-ldap,
+auth-saml, backup-reports, usage-report, transport-slack, etc) found on npm.
 
 See https://xen-orchestra.com for information on Xen Orchestra
 
@@ -39,7 +41,8 @@ Should follow xen-orchestra stable version.
 
 # Develop & Tests
 
-For testing and debugging purpose:
+For testing and debugging purpose a build configuration for docker-compose is
+provided:
 ```
 docker-compose -f build.yml build
 docker-compose -f build.yml run orchestra /bin/bash
