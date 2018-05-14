@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
 
-exec su-exec ${USER} "$@"
+rpcbind -f &
+
+exec su-exec root "$@"
 

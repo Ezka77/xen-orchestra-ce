@@ -1,15 +1,15 @@
 # Build container
 FROM node:6-alpine as build_container
 
-WORKDIR /home/node
+WORKDIR /root
 
 RUN apk add --no-cache git python g++ make bash libc6-compat
 
-USER node
+USER root
 
 RUN git clone -b master https://github.com/vatesfr/xen-orchestra/
 
-RUN cd /home/node/xen-orchestra &&\
+RUN cd /root/xen-orchestra &&\
     yarn && yarn build
 
 RUN rm -rf xen-orchestra/.git
@@ -22,20 +22,20 @@ FROM node:6-alpine
 LABEL xo-server=5.19.3 \
          xo-web=5.19.1
 
-ENV USER=node \
-    USER_HOME=/home/node \
+ENV USER=root \
+    USER_HOME=/root \
     XOA_PLAN=5 \
     DEBUG=xo:main
 
-WORKDIR /home/node
+WORKDIR /root
 
-RUN apk add --no-cache tini su-exec bash util-linux
+RUN apk add --no-cache tini su-exec bash util-linux nfs-utils openrc
 
 RUN mkdir -p /storage &&\
-    chown node:node /storage
+    chown root:root /storage
 
 # Copy our App from the build container
-COPY --from=build_container /home/node/xen-orchestra /home/node/xen-orchestra
+COPY --from=build_container /root/xen-orchestra /root/xen-orchestra
 
 ## Install plugins from npm
 RUN npm install --global \
@@ -52,13 +52,14 @@ RUN npm install --global \
     xo-server-load-balancer \
     xo-import-servers-csv
 
+RUN rc-update add nfsmount
 
 # configurations
-COPY xo-server.config.yaml /home/node/xen-orchestra/packages/xo-server/.xo-server.yaml
+COPY xo-server.config.yaml /root/xen-orchestra/packages/xo-server/.xo-server.yaml
 COPY xo-entry.sh /entrypoint.sh
 
 EXPOSE 8000
 
-WORKDIR /home/node/xen-orchestra/packages/xo-server/
+WORKDIR /root/xen-orchestra/packages/xo-server/
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh" ]
 CMD ["yarn", "start"]
