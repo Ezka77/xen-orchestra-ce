@@ -13,9 +13,9 @@ services:
             - NODE_ENV=production
             - XOA_PLAN=5
             # To enable XO superuser features (ex: NFS mount) on the host
-            # uncomment the following lines, it will start XO as ROOT superuser
+            # uncomment the following lines, it will start XO as x superuser
             # and enable the privileged capabilities for this container (access
-            # hosts devices, ...) NB: it's a security issue, so be warned !
+            # host devices, ...) NB: it's a security issue, so be warned !
             #- USER=root
         #privileged: true
         volumes:
