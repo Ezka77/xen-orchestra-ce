@@ -29,7 +29,7 @@ ENV USER=node \
 
 WORKDIR /home/node
 
-RUN apk add --no-cache tini su-exec bash util-linux
+RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2
 
 RUN mkdir -p /storage &&\
     chown node:node /storage
