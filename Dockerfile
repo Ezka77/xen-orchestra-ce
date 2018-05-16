@@ -19,8 +19,8 @@ RUN rm -rf xen-orchestra/.git
 # Runner container
 FROM node:6-alpine
 
-LABEL xo-server=5.19.4 \
-         xo-web=5.19.2
+#LABEL xo-server=5.19.6 \
+#         xo-web=5.19.4
 
 ENV USER=node \
     USER_HOME=/home/node \
