@@ -38,11 +38,10 @@ It's a best effort to follow xen-orchestra master version.
 Some of the Xen-Orchestra features (ex: NFS backups) requires to run the xo
 service as root/superuser and run the docker container with the `privileged`
 flag. It can be a security/integrity issue for the host running the
-container.Knowing that, you can enable these features by un-commenting these
-[two lines](https://github.com/Ezka77/xen-orchestra-ce/blob/db127333beb3d7ddfb73d443ccf4312adf142241/docker-compose.yml#L18-L19)
-in `docker-compose.yml` file.
+container. Knowing that, you can enable these features by un-commenting these
+[two lines](https://github.com/Ezka77/xen-orchestra-ce/blob/db127333beb3d7ddfb73d443ccf4312adf142241/docker-compose.yml#L19-L20) in `docker-compose.yml` file.
 
-Go back to a non-priviliged container and non-superuser may require to wipe the
+Going back to a non-priviliged container and non-superuser may require to wipe the
 directory : `./volumes/xo-server` or ensure that the `uid:gid` of files in this
 directory is `1000:1000` and re-create the running container.
 
