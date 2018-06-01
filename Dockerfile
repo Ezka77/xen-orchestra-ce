@@ -1,6 +1,6 @@
 # Build container
 #FROM node:6-alpine as build_container
-FROM christianu/docker-node:6-alpine
+FROM christianu/docker-node:6-alpine as build_container
 
 WORKDIR /home/node
 
