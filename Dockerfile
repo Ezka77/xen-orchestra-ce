@@ -36,20 +36,20 @@ RUN mkdir -p /storage &&\
 COPY --from=build_container /home/node/xen-orchestra /home/node/xen-orchestra
 
 # link plugins
-RUN cd /home/node/xen-orchestra/packages/xo-server-auth-github         & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-auth-github"
-RUN cd /home/node/xen-orchestra/packages/xo-server-auth-google         & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-auth-google"
-RUN cd /home/node/xen-orchestra/packages/xo-server-auth-ldap           & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-auth-ldap"
-RUN cd /home/node/xen-orchestra/packages/xo-server-auth-saml           & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-auth-saml"
-RUN cd /home/node/xen-orchestra/packages/xo-server-backup-reports      & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-backup-reports"
-RUN cd /home/node/xen-orchestra/packages/xo-server-cloud               & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-cloud"
-RUN cd /home/node/xen-orchestra/packages/xo-server-load-balancer       & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-load-balancer"
-RUN cd /home/node/xen-orchestra/packages/xo-server-perf-alert          & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-perf-alert"
-RUN cd /home/node/xen-orchestra/packages/xo-server-test-plugin         & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-test-plugin"
-RUN cd /home/node/xen-orchestra/packages/xo-server-transport-email     & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-transport-email"
-RUN cd /home/node/xen-orchestra/packages/xo-server-transport-nagios    & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-transport-nagios"
-RUN cd /home/node/xen-orchestra/packages/xo-server-transport-slack     & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-transport-slack"
-RUN cd /home/node/xen-orchestra/packages/xo-server-transport-xmpp      & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-transport-xmpp"
-RUN cd /home/node/xen-orchestra/packages/xo-server-usage-report        & yarn link & cd /home/node/xen-orchestra/packages/xo-server/node_modules & yarn link "xo-server-usage-report"
+RUN cd /home/node/xen-orchestra/packages/xo-server-auth-github         && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-auth-github"
+RUN cd /home/node/xen-orchestra/packages/xo-server-auth-google         && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-auth-google"
+RUN cd /home/node/xen-orchestra/packages/xo-server-auth-ldap           && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-auth-ldap"
+RUN cd /home/node/xen-orchestra/packages/xo-server-auth-saml           && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-auth-saml"
+RUN cd /home/node/xen-orchestra/packages/xo-server-backup-reports      && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-backup-reports"
+RUN cd /home/node/xen-orchestra/packages/xo-server-cloud               && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-cloud"
+RUN cd /home/node/xen-orchestra/packages/xo-server-load-balancer       && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-load-balancer"
+RUN cd /home/node/xen-orchestra/packages/xo-server-perf-alert          && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-perf-alert"
+RUN cd /home/node/xen-orchestra/packages/xo-server-test-plugin         && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-test-plugin"
+RUN cd /home/node/xen-orchestra/packages/xo-server-transport-email     && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-transport-email"
+RUN cd /home/node/xen-orchestra/packages/xo-server-transport-nagios    && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-transport-nagios"
+RUN cd /home/node/xen-orchestra/packages/xo-server-transport-slack     && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-transport-slack"
+RUN cd /home/node/xen-orchestra/packages/xo-server-transport-xmpp      && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-transport-xmpp"
+RUN cd /home/node/xen-orchestra/packages/xo-server-usage-report        && yarn link && cd /home/node/xen-orchestra/packages/xo-server/node_modules && yarn link "xo-server-usage-report"
 
 # configurations
 COPY xo-server.config.yaml /home/node/xen-orchestra/packages/xo-server/.xo-server.yaml
