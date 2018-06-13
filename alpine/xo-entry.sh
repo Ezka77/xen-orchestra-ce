@@ -5,4 +5,3 @@ set -e
 rpcbind
 
 exec su-exec ${USER} "$@"
-
