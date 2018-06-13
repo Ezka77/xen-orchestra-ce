@@ -8,11 +8,11 @@ services:
         depends_on:
             - redis
         environment:
-            - USER=node
             - DEBUG=xo:main
+              #- USER=node
+              #privileged: true
         volumes:
             - ./volumes/xo-server:/storage
-        privileged: true
     redis:
         image: redis
         command: redis-server --appendonly yes
