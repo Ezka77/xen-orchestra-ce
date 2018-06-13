@@ -25,13 +25,14 @@ ENV USER=node \
     DEBUG=xo:main
 
 ## Add a user
-RUN adduser -D -S -u 1000 node
+RUN adduser -D -u 1000 node
 
 WORKDIR /home/node
 
 RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2
 
-RUN mkdir -p /storage
+RUN mkdir -p /storage && \
+    chown node:node /storage
 
 # Copy our App from the build container
 COPY --from=build_container /home/node/xen-orchestra /home/node/xen-orchestra
@@ -41,4 +42,4 @@ COPY xo-entry.sh /entrypoint.sh
 EXPOSE 8000
 WORKDIR /home/node/xen-orchestra/packages/xo-server/
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh" ]
-CMD ["node", "bin/xo-server"]
+CMD ["yarn", "start"]
