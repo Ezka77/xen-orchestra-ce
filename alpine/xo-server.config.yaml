@@ -1,9 +1,3 @@
-# Default: undefined
-#user: 'node'
-#group: 'nogroup'
-
-#=====================================================================
-
 # Configuration of the embedded HTTP server.
 http:
   listen:
@@ -14,11 +8,8 @@ http:
   mounts:
     '/': '/home/node/xen-orchestra/packages/xo-web/dist/'
 
-#=====================================================================
-
 # Connection to the Redis server.
 redis:
-    # Syntax: redis://[db[:password]@]hostname[:port]
     uri: "redis://redis:6379"
 
 datadir: '/storage/data'
