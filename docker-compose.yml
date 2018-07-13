@@ -13,14 +13,14 @@ services:
             - NODE_ENV=production
             - XOA_PLAN=5
             # To enable XO superuser features (ex: NFS mount) on the host
-            # uncomment the following lines, it will start XO as x superuser
+            # uncomment the following lines, it will start XO as superuser
             # and enable the privileged capabilities for this container (access
             # host devices, ...) NB: it's a security issue, so be warned !
             #- USER=root
         #privileged: true
         volumes:
             - ./volumes/xo-server:/storage
-        logging:
+        logging: &logging
             driver: "json-file"
             options:
                 max-size: "1M"
@@ -33,7 +33,4 @@ services:
         volumes:
             - ./volumes/redis:/data
         logging:
-            driver: "json-file"
-            options:
-                max-size: "1M"
-                max-file: "2"
+            <<: *logging
