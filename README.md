@@ -1,10 +1,10 @@
 # Xen-Orchestra-CE
 
-[![](https://img.shields.io/badge/xen--orchestra-5.24-green.svg)]() [![](https://images.microbadger.com/badges/image/ezka77/xen-orchestra-ce.svg)](https://microbadger.com/images/ezka77/xen-orchestra-ce "Get your own image badge on microbadger.com") [![Docker Pulls](https://img.shields.io/docker/pulls/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce) [![Docker Build Statu](https://img.shields.io/docker/build/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce)
+[![](https://img.shields.io/badge/xen--orchestra-5.25-green.svg)]() [![](https://images.microbadger.com/badges/image/ezka77/xen-orchestra-ce.svg)](https://microbadger.com/images/ezka77/xen-orchestra-ce "Get your own image badge on microbadger.com") [![Docker Pulls](https://img.shields.io/docker/pulls/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce) [![Docker Build Statu](https://img.shields.io/docker/build/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/r/ezka77/xen-orchestra-ce)
 
 Docker &amp; docker-compose files to deploy Xen Orchestra Community Edition (ie:
-from source). This image include all the officials orchestra plugins build
-from sources and link to Xen-Orchestra.
+from source). This image include all the officials orchestra plugins build and
+linked for the current version.
 
 See https://xen-orchestra.com for information on Xen Orchestra
 
@@ -21,7 +21,7 @@ git clone https://github.com/Ezka77/xen-orchestra-ce.git
 docker-compose up
 ```
 
-or just use the docker compose file:
+or just use the docker compose file ([direct link](https://raw.githubusercontent.com/Ezka77/xen-orchestra-ce/master/docker-compose.yml)):
 ```
 curl -o docker-compose.yml https://raw.githubusercontent.com/Ezka77/xen-orchestra-ce/master/docker-compose.yml
 docker-compose up
