@@ -1,5 +1,5 @@
 # Build container
-FROM mhart/alpine-node:8 as build_container
+FROM mhart/alpine-node:8 as build
 
 WORKDIR /home/node
 
@@ -18,7 +18,7 @@ RUN rm -rf xen-orchestra/.git link_plugins.sh
 
 
 # Runner container
-FROM mhart/alpine-node:8
+FROM alpine:3.6
 
 ENV USER=node \
     XOA_PLAN=5 \
@@ -35,11 +35,15 @@ RUN mkdir -p /storage && \
     chown node:node /storage
 
 # Copy our App from the build container
-COPY --from=build_container /home/node/xen-orchestra /home/node/xen-orchestra
+COPY --from=build /home/node/xen-orchestra /home/node/xen-orchestra
+
+# Only copy over the node pieces we need from the above image
+COPY --from=build /usr/bin/node /usr/bin/
+COPY --from=build /usr/lib/libgcc* /usr/lib/libstdc* /usr/lib/
 
 # Run the App
 COPY xo-entry.sh /entrypoint.sh
 EXPOSE 8000
 WORKDIR /home/node/xen-orchestra/packages/xo-server/
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh" ]
-CMD ["yarn", "start"]
+CMD ["./bin/xo-server"]
