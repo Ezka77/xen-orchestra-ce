@@ -1,3 +1,4 @@
+#!/bin/ask
 
 # link all plugins
 PACKAGES_DIR=/home/node/xen-orchestra/packages
