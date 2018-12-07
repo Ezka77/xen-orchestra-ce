@@ -9,12 +9,16 @@ RUN git clone -b master https://github.com/vatesfr/xen-orchestra/
 
 # configurations
 COPY xo-server.config.yaml xen-orchestra/packages/xo-server/.xo-server.yaml
-COPY link_plugins.sh xen-orchestra/.
 
 RUN cd /home/node/xen-orchestra &&\
-    yarn && yarn build && ./link_plugins.sh
+    yarn &&\
+    yarn build
 
-RUN rm -rf xen-orchestra/.git link_plugins.sh
+COPY link_plugins.sh /link_plugins.sh
+RUN /bin/ash /link_plugins.sh
+
+
+RUN rm -rf /home/node/xen-orchestra/.git /link_plugins.sh
 
 
 # Runner container
