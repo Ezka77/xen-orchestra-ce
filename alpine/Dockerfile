@@ -5,7 +5,9 @@ WORKDIR /home/node
 
 RUN apk add --no-cache git python g++ make bash
 
-RUN git clone -b master https://github.com/vatesfr/xen-orchestra/
+# Clone git and remove .git
+RUN git clone -b master https://github.com/vatesfr/xen-orchestra/ && \
+    rm -rf /home/node/xen-orchestra/.git
 
 # configurations
 COPY xo-server.config.yaml xen-orchestra/packages/xo-server/.xo-server.yaml
@@ -14,11 +16,8 @@ RUN cd /home/node/xen-orchestra &&\
     yarn &&\
     yarn build
 
-COPY link_plugins.sh /link_plugins.sh
-RUN /bin/ash /link_plugins.sh
-
-
-RUN rm -rf /home/node/xen-orchestra/.git /link_plugins.sh
+COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
+RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
 
 # Runner container
