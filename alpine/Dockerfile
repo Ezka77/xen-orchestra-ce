@@ -21,7 +21,7 @@ RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
 
 # Runner container
-FROM alpine:3.6
+FROM alpine:3.8
 
 ENV USER=node \
     XOA_PLAN=5 \
