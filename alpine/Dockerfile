@@ -19,7 +19,7 @@ RUN cd /home/node/xen-orchestra &&\
 COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
-# VHDIMOUNT support (EXPERIMENTAL)
+# VHDIMOUNT support
 FROM alpine:3.8 as build-libvhdi
 
 WORKDIR /home/node
@@ -30,7 +30,7 @@ RUN git clone https://github.com/libyal/libvhdi.git
 RUN cd libvhdi && ./synclibs.sh && \
     ./autogen.sh && \
     ./configure && \
-    make -j4 && \
+    make && \
     make install
 
 # Runner container
