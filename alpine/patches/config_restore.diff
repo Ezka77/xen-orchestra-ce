@@ -1,0 +1,13 @@
+Index: xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
+===================================================================
+--- xen-orchestra.orig/packages/xo-web/src/xo-app/settings/config/index.js
++++ xen-orchestra/packages/xo-web/src/xo-app/settings/config/index.js
+@@ -58,7 +58,7 @@ export default class Config extends Comp
+ 
+     return (
+       <div>
+-        {process.env.XOA_PLAN < 5 ? (
++        {process.env.XOA_PLAN > 0 ? (
+           <div className='mb-1'>
+             <h2>
+               <Icon icon='import' /> {_('importConfig')}

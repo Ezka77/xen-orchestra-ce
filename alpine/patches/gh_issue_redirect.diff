@@ -1,0 +1,13 @@
+Index: xen-orchestra/packages/xo-web/src/xo-app/about/index.js
+===================================================================
+--- xen-orchestra.orig/packages/xo-web/src/xo-app/about/index.js
++++ xen-orchestra/packages/xo-web/src/xo-app/about/index.js
+@@ -81,7 +81,7 @@ export default class About extends Compo
+               </Row>
+               <Row>
+                 <Col mediumSize={6}>
+-                  <a href='https://github.com/vatesfr/xen-orchestra/issues/new'>
++                  <a href='https://github.com/Ezka77/xen-orchestra-ce'>
+                     <Icon icon='bug' size={4} />
+                     <h4>{_('bugTracker')}</h4>
+                   </a>

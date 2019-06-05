@@ -12,7 +12,21 @@ RUN git clone -b master https://github.com/vatesfr/xen-orchestra/ && \
 # configurations
 COPY xo-server.config.yaml xen-orchestra/packages/xo-server/.xo-server.yaml
 
+# patches
+COPY patches /home/node/xen-orchestra/patches
+
+# no quilt in alpine
+RUN git clone https://git.savannah.nongnu.org/git/quilt.git
+
+RUN apk add --no-cache diffutils gawk gettext patch perl sed
+
+RUN cd quilt &&\
+    ./configure &&\
+    make &&\
+    make install
+
 RUN cd /home/node/xen-orchestra &&\
+    quilt push gh_issue_redirect &&\
     yarn &&\
     yarn build
 
