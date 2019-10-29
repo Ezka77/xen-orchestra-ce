@@ -37,7 +37,7 @@ RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 FROM alpine:3.8 as build-libvhdi
 
 WORKDIR /home/node
-RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev
+RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
 
 RUN git clone https://github.com/libyal/libvhdi.git
 
