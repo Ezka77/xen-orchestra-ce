@@ -14,6 +14,7 @@ xo-server-usage-report \
 xo-server-auth-google \
 xo-server-load-balancer \
 xo-server-test-plugin \
+xo-server-transport-icinga2 \
 xo-server-transport-nagios \
 xo-server-perf-alert"
 
