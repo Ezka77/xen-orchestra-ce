@@ -59,7 +59,7 @@ RUN adduser -D -u 1000 node
 
 WORKDIR /home/node
 
-RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2 fuse gettext
+RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2 fuse gettext curl
 
 RUN mkdir -p /storage && \
     chown node:node /storage
@@ -81,4 +81,5 @@ COPY xo-entry.sh /entrypoint.sh
 EXPOSE 8000
 WORKDIR /home/node/xen-orchestra/packages/xo-server/
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh" ]
+HEALTHCHECK CMD curl --fail http://localhost:8000/ || exit 1
 CMD ["./bin/xo-server"]
