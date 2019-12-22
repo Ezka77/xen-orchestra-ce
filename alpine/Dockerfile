@@ -59,7 +59,7 @@ RUN adduser -D -u 1000 node
 
 WORKDIR /home/node
 
-RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2 fuse gettext
+RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2 fuse gettext cifs-utils
 
 RUN mkdir -p /storage && \
     chown node:node /storage
