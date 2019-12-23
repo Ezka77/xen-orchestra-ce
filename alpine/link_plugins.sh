@@ -1,25 +1,27 @@
 #!/bin/ash
 
-# link all plugins
+# link listed plugins
 PACKAGES_DIR=/home/node/xen-orchestra/packages
 
-PLUGINS="xo-server-transport-xmpp \
-xo-server-transport-email \
-xo-server-backup-reports \
-xo-server-auth-github \
-xo-server-transport-slack \
+# official plugins directories
+PLUGINS="xo-server-auth-github \
+xo-server-auth-google \
 xo-server-auth-ldap \
 xo-server-auth-saml \
-xo-server-usage-report \
-xo-server-auth-google \
+xo-server-backup-reports \
 xo-server-load-balancer \
-xo-server-test-plugin \
+xo-server-perf-alert \
+xo-server-sdn-controller \
+xo-server-transport-email \
 xo-server-transport-icinga2 \
 xo-server-transport-nagios \
-xo-server-perf-alert"
+xo-server-transport-slack \
+xo-server-transport-xmpp \
+xo-server-usage-report \
+xo-server-web-hooks"
 
-# Disabled
-# xo-server-cloud \
+# NB: this list is manually updated, feel free to make a pull request if new
+# plugins are added/removed.
 
 cd ${PACKAGES_DIR}/xo-server/node_modules
 
