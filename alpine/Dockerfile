@@ -9,9 +9,6 @@ RUN apk add --no-cache git python g++ make bash
 RUN git clone -b master https://github.com/vatesfr/xen-orchestra/ && \
     rm -rf /home/node/xen-orchestra/.git
 
-# configurations
-COPY xo-server.config.yaml xen-orchestra/packages/xo-server/.xo-server.yaml
-
 # patches
 COPY patches /home/node/xen-orchestra/patches
 
@@ -63,6 +60,9 @@ RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2 fuse gettext 
 
 RUN mkdir -p /storage && \
     chown node:node /storage
+
+# configurations
+COPY config.toml /etc/xo-server/config.toml
 
 # Copy our App from the build container
 COPY --from=build /home/node/xen-orchestra /home/node/xen-orchestra
