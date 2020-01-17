@@ -6,14 +6,14 @@ WORKDIR /home/node
 RUN apk add --no-cache git python g++ make bash
 
 # Clone git and remove .git
-RUN git clone -b master https://github.com/vatesfr/xen-orchestra/ && \
+RUN git clone -b master --depth 1 https://github.com/vatesfr/xen-orchestra/ && \
     rm -rf /home/node/xen-orchestra/.git
 
 # patches
 COPY patches /home/node/xen-orchestra/patches
 
 # no quilt in alpine
-RUN git clone https://git.savannah.nongnu.org/git/quilt.git
+RUN git clone --depth 1 https://git.savannah.nongnu.org/git/quilt.git
 
 RUN apk add --no-cache diffutils gawk gettext patch perl sed
 
