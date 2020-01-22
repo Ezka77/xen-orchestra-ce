@@ -45,7 +45,7 @@ RUN cd libvhdi && ./synclibs.sh && \
     make install
 
 # Runner container
-FROM alpine:3.8
+FROM alpine:3.11
 
 ENV USER=node \
     XOA_PLAN=5 \
