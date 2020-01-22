@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Add a tag with the latest build
+
+VERSION=$(docker inspect --format='{{ index .Config.Labels "version" }}' $IMAGE_NAME)
+
+echo "[***] Post-Build hook - Adding tag ${VERSION}"
+
+docker tag $IMAGE_NAME $DOCKER_REPO:${VERSION}
+docker push $DOCKER_REPO:${VERSION}

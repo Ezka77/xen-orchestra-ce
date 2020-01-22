@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "[***] Build hook - retrieve XOA versions"
+
+XOSERVER=$(git ls-remote --tags --sort="v:refname" https://github.com/vatesfr/xen-orchestra.git | grep "xo-server-v" | tail -1 | cut -f2 | sed -rn "s/.*v//p")
+XOWEB=$(git ls-remote --tags --sort="v:refname" https://github.com/vatesfr/xen-orchestra.git | grep "xo-web-v" | tail -1 | cut -f2 | sed -rn "s/.*v//p")
+VERSION=$(echo ${XOSERVER} | sed -rn 's/([[:digit:]]+\.[[:digit:]]+)\..*/\1/p')
+
+echo "[***] Build hook - docker build with labels"
+
+docker build \
+    --build-arg VERSION=${VERSION}   \
+    --build-arg XOSERVER=${XOSERVER} \
+    --build-arg XOWEB=${XOWEB}       \
+    -t $IMAGE_NAME .

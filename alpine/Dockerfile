@@ -31,7 +31,7 @@ COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
 # VHDIMOUNT support
-FROM alpine:3.8 as build-libvhdi
+FROM alpine:3.11 as build-libvhdi
 
 WORKDIR /home/node
 RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
@@ -47,6 +47,12 @@ RUN cd libvhdi && ./synclibs.sh && \
 # Runner container
 FROM alpine:3.11
 
+ARG VERSION=latest
+ARG XOSERVER=latest
+ARG XOWEB=latest
+
+LABEL version=$VERSION xo-server=$XOSERVER xo-web=$XOWEB
+
 ENV USER=node \
     XOA_PLAN=5 \
     DEBUG=xo:main
@@ -56,7 +62,17 @@ RUN adduser -D -u 1000 node
 
 WORKDIR /home/node
 
-RUN apk add --no-cache tini su-exec bash util-linux nfs-utils lvm2 fuse gettext cifs-utils
+RUN apk add --no-cache \
+  tini \
+  su-exec \
+  bash \
+  util-linux \
+  nfs-utils \
+  lvm2 \
+  fuse \
+  gettext \
+  cifs-utils \
+  curl
 
 RUN mkdir -p /storage && \
     chown node:node /storage
@@ -75,6 +91,10 @@ COPY --from=build /usr/lib/libgcc* /usr/lib/libstdc* /usr/lib/
 COPY --from=build-libvhdi /usr/local/bin/vhdimount /usr/local/bin/
 COPY --from=build-libvhdi /usr/local/bin/vhdiinfo /usr/local/bin/
 COPY --from=build-libvhdi /usr/local/lib/libvhdi* /usr/local/lib/
+
+# Healthcheck
+HEALTHCHECK --interval=5m --timeout=10s \
+  CMD curl -f http://localhost:8000/ || exit 1
 
 # Run the App
 COPY xo-entry.sh /entrypoint.sh
