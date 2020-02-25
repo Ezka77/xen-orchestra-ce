@@ -72,7 +72,8 @@ RUN apk add --no-cache \
   fuse \
   gettext \
   cifs-utils \
-  curl
+  curl \
+  openssl
 
 RUN mkdir -p /storage && \
     chown node:node /storage
