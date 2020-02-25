@@ -2,7 +2,11 @@
 
 # Add a tag with the latest build
 
-VERSION=$(docker inspect --format='{{ index .Config.Labels "version" }}' $IMAGE_NAME)
+# Find a way to inspect the laster build image
+#VERSION=$(docker inspect --format='{{ index .Config.Labels "version" }}')
+
+XOSERVER=$(git ls-remote --tags --sort="v:refname" https://github.com/vatesfr/xen-orchestra.git | grep "xo-server-v" | tail -1 | cut -f2 | sed -rn "s/.*v//p")
+VERSION=$(echo ${XOSERVER} | sed -rn 's/([[:digit:]]+\.[[:digit:]]+)\..*/\1/p')
 
 echo "[***] Post-Build hook - Adding tag ${VERSION}"
 
