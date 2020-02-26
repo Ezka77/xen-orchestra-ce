@@ -8,7 +8,15 @@
 XOSERVER=$(git ls-remote --tags --sort="v:refname" https://github.com/vatesfr/xen-orchestra.git | grep "xo-server-v" | tail -1 | cut -f2 | sed -rn "s/.*v//p")
 VERSION=$(echo ${XOSERVER} | sed -rn 's/([[:digit:]]+\.[[:digit:]]+)\..*/\1/p')
 
+# if we fail to retrieve a correct version number, exit!
+if [ -z ${VERSION} ]; then
+  echo "[***] Post-Build hook - Version number is empty!"
+  exit 0
+fi
+
+# if Version not empty push it as a tag
+
 echo "[***] Post-Build hook - Adding tag ${VERSION}"
 
-docker tag $IMAGE_NAME $DOCKER_REPO:${VERSION}
-docker push $DOCKER_REPO:${VERSION}
+docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${VERSION}
+docker push ${DOCKER_REPO}:${VERSION}
