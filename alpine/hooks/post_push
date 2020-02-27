@@ -6,7 +6,7 @@
 #VERSION=$(docker inspect --format='{{ index .Config.Labels "version" }}' ${IMAGE_NAME})
 
 echo "[***] Post-Build hook - retrieve XOA version"
-VERSION=$(curl -s https://raw.githubusercontent.com/vatesfr/xen-orchestra/master/packages/xo-server/package.json | python -c "import sys, json; print(".".join(json.load(sys.stdin)['version'].split('.')[0:2]))")
+VERSION=$(curl -s https://raw.githubusercontent.com/vatesfr/xen-orchestra/master/packages/xo-server/package.json | python -c "import sys, json; print('.'.join(json.load(sys.stdin)['version'].split('.')[0:2]))")
 
 # if we fail to retrieve a correct version number, exit!
 if [ -z ${VERSION} ]; then
