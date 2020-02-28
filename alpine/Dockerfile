@@ -72,7 +72,6 @@ RUN apk add --no-cache \
   fuse \
   gettext \
   cifs-utils \
-  curl \
   openssl
 
 RUN mkdir -p /storage && \
@@ -89,13 +88,13 @@ COPY --from=build /usr/bin/node /usr/bin/
 COPY --from=build /usr/lib/libgcc* /usr/lib/libstdc* /usr/lib/
 
 # Get libvhdi
-COPY --from=build-libvhdi /usr/local/bin/vhdimount /usr/local/bin/
-COPY --from=build-libvhdi /usr/local/bin/vhdiinfo /usr/local/bin/
+COPY --from=build-libvhdi /usr/local/bin/vhdimount /usr/local/bin/vhdiinfo  /usr/local/bin/
 COPY --from=build-libvhdi /usr/local/lib/libvhdi* /usr/local/lib/
 
 # Healthcheck
-HEALTHCHECK --interval=5m --timeout=10s \
-  CMD curl -f http://localhost:8000/ || exit 1
+COPY healthcheck.js /usr/local/share/healthcheck.js
+HEALTHCHECK --interval=1m --timeout=12s --start-period=30s \  
+ CMD /usr/bin/node /usr/local/share/healthcheck.js
 
 # Run the App
 COPY xo-entry.sh /entrypoint.sh
