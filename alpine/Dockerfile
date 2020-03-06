@@ -1,5 +1,5 @@
 # XOA Build container
-FROM mhart/alpine-node:8 as build
+FROM mhart/alpine-node:12 as build
 
 WORKDIR /home/node
 
