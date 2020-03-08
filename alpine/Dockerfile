@@ -24,6 +24,7 @@ RUN cd quilt &&\
 
 RUN cd /home/node/xen-orchestra &&\
     quilt push gh_issue_redirect &&\
+    yarn config set network-timeout 300000 &&\
     yarn &&\
     yarn build
 
