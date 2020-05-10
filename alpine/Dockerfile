@@ -6,28 +6,21 @@ WORKDIR /home/node
 RUN apk add --no-cache git python g++ make bash
 
 # Clone git and remove .git
-RUN git clone -b master --depth 1 https://github.com/vatesfr/xen-orchestra/ && \
-    rm -rf /home/node/xen-orchestra/.git
+RUN git clone -b master --depth 1 https://github.com/vatesfr/xen-orchestra/
 
 # patches
 COPY patches /home/node/xen-orchestra/patches
+RUN cd /home/node/xen-orchestra \
+    && git apply patches/gh_issue_redirect.diff \
+    && rm -rf /home/node/xen-orchestra/.git /home/node/xen-orchestra/patches
 
-# no quilt in alpine
-RUN git clone --depth 1 https://git.savannah.nongnu.org/git/quilt.git
-
-RUN apk add --no-cache diffutils gawk gettext patch perl sed
-
-RUN cd quilt &&\
-    ./configure &&\
-    make &&\
-    make install
-
+# build
 RUN cd /home/node/xen-orchestra &&\
-    quilt push gh_issue_redirect &&\
     yarn config set network-timeout 300000 &&\
     yarn &&\
     yarn build
 
+# plugins
 COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
@@ -97,7 +90,7 @@ HEALTHCHECK --interval=1m --timeout=12s --start-period=30s \
  CMD /usr/bin/node /usr/local/share/healthcheck.js
 
 # Run the App
-COPY xo-entry.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 EXPOSE 8000
 WORKDIR /home/node/xen-orchestra/packages/xo-server/
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh" ]
