@@ -59,7 +59,7 @@ ENV USER=node \
     DEBUG=xo:main
 
 ## Add a user
-RUN adduser -D -u 1000 node
+RUN mkdir -p /home/node
 
 WORKDIR /home/node
 
@@ -75,8 +75,7 @@ RUN apk add --no-cache \
   cifs-utils \
   openssl
 
-RUN mkdir -p /storage && \
-    chown node:node /storage
+RUN mkdir -p /storage
 
 # configurations
 COPY config.toml /etc/xo-server/config.toml

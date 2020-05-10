@@ -12,15 +12,13 @@ services:
             - DEBUG=xo:main
             - NODE_ENV=production
             - XOA_PLAN=5
-            # To enable XO superuser features (ex: NFS mount) on the host
-            # uncomment the following lines, it will start XO as superuser
-            # and enable the privileged capabilities for this container (access
-            # host devices, ...) NB: it's a security issue, so be warned !
-            #- USER=root
         #privileged: true
+        # SYS_ADMIN should be enough capability to use NFS mount
+        cap_add:
+          - SYS_ADMIN
         volumes:
-            - ./volumes/xo-server:/storage
-        logging: &logging
+            - xo-data:/storage
+        logging: &default_logging
             driver: "json-file"
             options:
                 max-size: "1M"
@@ -31,6 +29,10 @@ services:
         image: redis:alpine
         command: redis-server --appendonly yes
         volumes:
-            - ./volumes/redis:/data
+            - redis-data:/data
         logging:
-            <<: *logging
+            <<: *default_logging
+
+volumes:
+  xo-data:
+  redis-data:

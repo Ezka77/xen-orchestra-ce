@@ -37,9 +37,8 @@ It's a best effort to follow xen-orchestra master version.
 
 Some of the Xen-Orchestra features (ex: NFS backups) requires to run the xo
 service as root/superuser and run the docker container with the `privileged`
-flag. It can be a security/integrity issue for the host running the
-container. Knowing that, you can enable these features by un-commenting these
-[two lines](https://github.com/Ezka77/xen-orchestra-ce/blob/db127333beb3d7ddfb73d443ccf4312adf142241/docker-compose.yml#L19-L20) in `docker-compose.yml` file.
+flag. The docker-compose file add the SYS_ADMIN capability to the running
+container, this will allow to use NFS mount.
 
 ## Support
 

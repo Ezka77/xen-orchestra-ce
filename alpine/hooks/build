@@ -9,8 +9,10 @@ VERSION=$(echo ${XOSERVER} | sed -rn 's/([[:digit:]]+\.[[:digit:]]+)\..*/\1/p')
 
 echo "[***] Build hook - build XOA docker image version ${VERSION}: xoserver-${XOSERVER} xoweb-${XOWEB}"
 
+MY_IMAGE_NAME=${IMAGE_NAME:-"ezka77/xen-orchestra-ce:latest"}
+
 docker build \
     --build-arg VERSION=${VERSION}   \
     --build-arg XOSERVER=${XOSERVER} \
     --build-arg XOWEB=${XOWEB}       \
-    -t $IMAGE_NAME .
+    -t ${MY_IMAGE_NAME} .

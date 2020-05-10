@@ -4,8 +4,8 @@ set -e
 # Start rpcbind (used for NFS mount)
 rpcbind
 
-# fix perm
-chown ${USER}:${USER} /storage -R
+# fix permissions for storage directory
+chown $(id -u):$(id -g) /storage -R
 
 # start app
-exec su-exec ${USER} "$@"
+exec "$@"
