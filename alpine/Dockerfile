@@ -1,10 +1,12 @@
-# XOA Build container
-FROM mhart/alpine-node:12 as build
+FROM node:14.5.0-alpine3.12 as build
 
 WORKDIR /home/node
 
-RUN apk add --no-cache git python g++ make bash
+RUN apk add --no-cache git python2 g++ make bash
 
+#fix error - url loader
+RUN npm install url-loader --save-dev
+ 
 # Clone git and remove .git
 RUN git clone -b master --depth 1 https://github.com/vatesfr/xen-orchestra/
 
@@ -25,7 +27,7 @@ COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
 # VHDIMOUNT support
-FROM alpine:3.11 as build-libvhdi
+FROM alpine:3.12 as build-libvhdi
 
 WORKDIR /home/node
 RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
@@ -39,7 +41,7 @@ RUN cd libvhdi && ./synclibs.sh && \
     make install
 
 # Runner container
-FROM alpine:3.11
+FROM alpine:3.12
 
 ARG VERSION=latest
 ARG XOSERVER=latest
@@ -77,7 +79,8 @@ COPY config.toml /etc/xo-server/config.toml
 COPY --from=build /home/node/xen-orchestra /home/node/xen-orchestra
 
 # Only copy over the node pieces we need from the above image
-COPY --from=build /usr/bin/node /usr/bin/
+#fix node - new path - version 14.5
+COPY --from=build /usr/local/bin/node /usr/bin/
 COPY --from=build /usr/lib/libgcc* /usr/lib/libstdc* /usr/lib/
 
 # Get libvhdi
