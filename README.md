@@ -40,6 +40,54 @@ service as root/superuser and run the docker container with the `privileged`
 flag. The docker-compose file add the SYS_ADMIN capability to the running
 container, this will allow to use NFS mount.
 
+## Environment Variables
+
+Some behaviour of the container can be managed via the following environment variables:
+
+* XO_HTTP_REDIRECTTOHTTPS : Redirect HTTP to HTTPS (default = false)
+* XO_HTTP_LISTEN_PORT : HTTP listen port (default = 8000)
+* XO_HTTPS_LISTEN_PORT : HTTPS listen port (default = unset)
+* XO_HTTPS_LISTEN_CERT : Certificate (in PEM format) for HTTPS (default = './certificate.pem')
+* XO_HTTPS_LISTEN_KEY : Private key (in PEM format) for HTTPS (default = './key.pem')
+* XO_HTTPS_LISTEN_AUTOCERT : Automatically create self-signed certificate if "key" and "cert" are missing (default = true)
+* XO_HTTPS_LISTEN_DHPARAM : DH parameter file for HTTPS (default = unset)
+
+These environment variables can be added to your compose file to enable HTTPS support.
+
+This following example has Xen Orchestra listening on port 80 (HTTP) and port 443 (HTTPS) with automatic self-signed certificates:
+
+```yaml
+services:
+  orchestra:
+    restart: unless-stopped
+    image: ezka77/xen-orchestra-ce:latest
+    container_name: XO_server
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - redis
+    environment:
+      - DEBUG=xo:main
+      - NODE_ENV=production
+      - XOA_PLAN=5
+      - XO_HTTP_REDIRECTTOHTTPS=true
+      - XO_HTTP_LISTEN_PORT=80
+      - XO_HTTPS_LISTEN_PORT=443
+      - XO_HTTPS_LISTEN_AUTOCERT=true
+    #privileged: true
+    # SYS_ADMIN should be enough capability to use NFS mount
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - xo-data:/storage
+    logging: &default_logging
+      driver: "json-file"
+      options:
+        max-size: "1M"
+        max-file: "2"
+```
+
 ## Support
 
 * This Docker project is not supported by Xen-Orchestra or the parent company Vates.
