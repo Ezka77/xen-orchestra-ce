@@ -59,7 +59,6 @@ RUN mkdir -p /home/node
 WORKDIR /home/node
 
 RUN apk add --no-cache \
-  tini \
   su-exec \
   bash \
   util-linux \
@@ -70,10 +69,7 @@ RUN apk add --no-cache \
   cifs-utils \
   openssl
 
-RUN mkdir -p /storage
-
-# configurations
-COPY config.toml /etc/xo-server/config.toml
+RUN mkdir -p /storage /etc/xo-server
 
 # Copy our App from the build container
 COPY --from=build /home/node/xen-orchestra /home/node/xen-orchestra
@@ -92,9 +88,23 @@ COPY healthcheck.js /usr/local/share/healthcheck.js
 HEALTHCHECK --interval=1m --timeout=12s --start-period=30s \  
  CMD /usr/bin/node /usr/local/share/healthcheck.js
 
+# Add remco to image
+ENV REMCO_VER="0.11.1"
+RUN apk add --no-cache ca-certificates && \
+    wget https://github.com/HeavyHorst/remco/releases/download/v${REMCO_VER}/remco_${REMCO_VER}_linux_amd64.zip && \
+    unzip remco_${REMCO_VER}_linux_amd64.zip && rm remco_${REMCO_VER}_linux_amd64.zip && \
+    mv remco_linux /bin/remco
+ADD remco /etc/remco
+
+# Environment vars to control config
+ENV XO_HTTP_LISTEN_PORT="8000" \
+#    XO_HTTP_REDIRECTTOHTTPS="false" \
+#    XO_HTTPS_LISTEN_PORT="443" \
+#    XO_HTTPS_LISTEN_CERT="./certificate.pem" \
+#    XO_HTTPS_LISTEN_KEY="./key.pem" \
+#    XO_HTTPS_LISTEN_AUTOCERT="true" \
+#    XO_HTTPS_LISTEN_DHPARAM="./dhparam.pem
+
 # Run the App
-COPY entrypoint.sh /entrypoint.sh
-EXPOSE 8000
 WORKDIR /home/node/xen-orchestra/packages/xo-server/
-ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh" ]
-CMD ["./bin/xo-server"]
+CMD ["/bin/remco"]

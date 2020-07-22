@@ -57,7 +57,7 @@ datadir = '/storage/data'
 [http]
 # If set to true, all HTTP traffic will be redirected to the first HTTPs
 # configuration.
-# redirectToHttps = true
+redirectToHttps = {{ getv("/xo/http/redirecttohttps", "false") }}
 
 # Settings applied to cookies created by xo-server's embedded HTTP server.
 #
@@ -78,7 +78,7 @@ datadir = '/storage/data'
 # Port on which the server is listening on.
 #
 # Default: undefined
-port = 8000
+port = {{ getv("/xo/http/listen/port") }}
 
 # Instead of `host` and `port` a path to a UNIX socket may be specified
 # (overrides `host` and `port`).
@@ -92,29 +92,17 @@ port = 8000
 # # https://nodejs.org/docs/latest/api/tls.html#tls.createServer
 # #
 # # The only difference is the presence of the certificate and the key.
-# [[http.listen]]
-# #hostname = '127.0.0.1'
-# port = 443
-#
-# # File containing the certificate (PEM format).
-# #
-# # If a chain of certificates authorities is needed, you may bundle them
-# # directly in the certificate.
-# #
-# # Note: the order of certificates does matter, your certificate should come
-# # first followed by the certificate of the above
-# # certificate authority up to the root.
-# #
-# # Default: undefined
-# cert = './certificate.pem'
-#
-# # File containing the private key (PEM format).
-# #
-# # If the key is encrypted, the passphrase will be asked at
-# # server startup.
-# #
-# # Default: undefined
-# key = './key.pem'
+
+{% if exists("/xo/https/listen/port") %}
+[[http.listen]]
+port = {{ getv("/xo/https/listen/port") }}
+cert = '{{ getv("/xo/https/listen/cert", "./certificate.pem") }}'
+key = '{{ getv("/xo/https/listen/key", "./key.pem") }}'
+autoCert = {{ getv("/xo/https/listen/autocert", "true") }}
+{% if exists("/xo/https/listen/dhparam") %}
+dhparam = '{{ getv("/xo/https/listen/dhparam") }}'
+{% endif %}
+{% endif %}
 
 # List of files/directories which will be served.
 [http.mounts]

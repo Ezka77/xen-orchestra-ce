@@ -2,7 +2,7 @@ var http = require("http");
 
 var options = {
     host : "localhost",
-    port : "8000",
+    port : process.env.XO_HTTP_LISTEN_PORT,
     timeout : 2000
 };
 
