@@ -97,7 +97,9 @@ RUN apk add --no-cache ca-certificates && \
 ADD remco /etc/remco
 
 # Environment vars to control config
-ENV XO_HTTP_LISTEN_PORT="8000" \
+ENV XO_HTTP_LISTEN_PORT="8000"
+# List of configurable env vars:
+#    XO_HTTP_LISTEN_PORT="8000" \
 #    XO_HTTP_REDIRECTTOHTTPS="false" \
 #    XO_HTTPS_LISTEN_PORT="443" \
 #    XO_HTTPS_LISTEN_CERT="./certificate.pem" \
