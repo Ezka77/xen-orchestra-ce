@@ -1,4 +1,4 @@
-FROM node:14.5.0-alpine3.12 as build
+FROM node:14.15-alpine3.12 as build
 
 WORKDIR /home/node
 
