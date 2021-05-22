@@ -1,9 +1,11 @@
-name: ci
+name: Scheduled CI Docker
 
 on:
   schedule:
     # once a week build a new image
-    - cron: '30 1 * * 0'
+    #- cron: '30 1 * * 0'
+    workflow_dispatch:
+
 
 jobs:
   docker:
@@ -25,10 +27,10 @@ jobs:
         with:
           result-encoding: string
           script: |
-          const myurl = https://raw.githubusercontent.com/vatesfr/xen-orchestra/master/packages/xo-server/package.json
-          const result = await github.request(myurl)
-          console.log(result)
-          return result.version
+            const myurl = https://raw.githubusercontent.com/vatesfr/xen-orchestra/master/packages/xo-server/package.json
+            const result = await github.request(myurl)
+            console.log(result)
+            return result.version
       -
         name: Debug
         run: echo ${{ steps.xoa_version.outputs.result }}
