@@ -1,15 +1,52 @@
-name: Scheduled CI Docker
+name: Weekly Build
 
-on: workflow_dispatch
-  #schedule:
-    ## once a week build a new image
-    #- cron: '30 1 * * 0'
+on:
+  # once a week build a new image
+  schedule:
+    - cron: '30 1 * * 0'
+  # or manually
+  workflow_dispatch:
 
 
 jobs:
-  docker:
+  # Prebuild: get variables from XOA official repos
+  pre-build:
     runs-on: ubuntu-latest
+
+    outputs:
+      xoserver: ${{ steps.xoa-version.outputs.xoaserver }}
+      xoweb: ${{ steps.xoa-version.outputs.xoaweb }}
+      version: ${{ steps.version.outputs.version }}
+
     steps:
+      - 
+        name: Add python
+        uses: actions/setup-python@v2
+      - 
+        name: Checkout scripts
+        uses: actions/checkout@v2
+      -
+        name: Get XOA server version
+        id: xoa-version
+        run: python scripts/xoa_versions.py
+      -
+        name: Set global version
+        id: version
+        env:
+          XOASERVER: ${{ steps.xoa-version.outputs.xoaserver }}
+        run: |
+          VERSION=$(echo ${XOASERVER} | sed -rn 's/([[:digit:]]+\.[[:digit:]]+)\..*/\1/p')
+          echo "::set-output name=version::${VERSION}"
+
+  # build XO in a docker
+  docker-build:
+    needs: pre-build
+    runs-on: ubuntu-latest
+        
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v2
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -19,24 +56,24 @@ jobs:
       -
         name: Login to DockerHub
         uses: docker/login-action@v1
-      -
-        name: Get XOA version
-        uses: actions/github-script@v4
-        id: xoa_version
         with:
-          result-encoding: string
-          script: |
-            const myurl = https://raw.githubusercontent.com/vatesfr/xen-orchestra/master/packages/xo-server/package.json
-            const result = await github.request(myurl)
-            console.log(result)
-            return result.version
-      -
-        name: Debug
-        run: echo ${{ steps.xoa_version.outputs.result }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
         uses: docker/build-push-action@v2
+        env:
+          VERSION: ${{ needs.pre-build.outputs.version }}
+          XOSERVER: ${{ needs.pre-build.outputs.xoserver }}
+          XOWEB: ${{ needs.pre-build.outputs.xoweb }}
         with:
-          context: ./alpine
+          context: alpine
+          platforms: linux/amd64,linux/arm64
           push: false
-          tags: ezka77/xen-orchestra-ce:latest
+          tags: |
+            ezka77/xen-orchestra-ce:latest
+            ezka77/xen-orchestra-ce:${{ needs.pre-build.outputs.version }}
+          build-args: |
+            VERSION=${VERSION}
+            XOSERVER=${XOSERVER}
+            XOWEB=${XOWEB}
