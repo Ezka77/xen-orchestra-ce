@@ -1,10 +1,10 @@
 name: Scheduled CI Docker
 
 on:
-  schedule:
-    # once a week build a new image
+  workflow_dispatch:
+  #schedule:
+    ## once a week build a new image
     #- cron: '30 1 * * 0'
-    workflow_dispatch:
 
 
 jobs:
