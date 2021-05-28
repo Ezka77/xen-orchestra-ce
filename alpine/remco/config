@@ -16,7 +16,7 @@ name = "rpcbind"
 name = "xo-server"
 
 [resource.exec]
-  command = "./bin/xo-server"
+  command = "node dist/cli.mjs"
   kill_timeout = 10
 
 [[resource.template]]

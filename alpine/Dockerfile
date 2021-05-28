@@ -1,4 +1,4 @@
-FROM node:14.15-alpine3.12 as build
+FROM node:14.17-alpine3.13 as build
 
 WORKDIR /home/node
 
@@ -27,7 +27,7 @@ COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
 # VHDIMOUNT support
-FROM alpine:3.12 as build-libvhdi
+FROM alpine:3.13 as build-libvhdi
 
 WORKDIR /home/node
 RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
@@ -40,8 +40,14 @@ RUN cd libvhdi && ./synclibs.sh && \
     make && \
     make install
 
+# REMCO
+FROM golang:1.15-alpine3.13 as build-remco
+
+RUN apk add --no-cache git
+RUN go get github.com/HeavyHorst/remco/cmd/remco
+
 # Runner container
-FROM alpine:3.12
+FROM alpine:3.13
 
 ARG VERSION=latest
 ARG XOSERVER=latest
@@ -75,7 +81,6 @@ RUN mkdir -p /storage /etc/xo-server
 COPY --from=build /home/node/xen-orchestra /home/node/xen-orchestra
 
 # Only copy over the node pieces we need from the above image
-#fix node - new path - version 14.5
 COPY --from=build /usr/local/bin/node /usr/bin/
 COPY --from=build /usr/lib/libgcc* /usr/lib/libstdc* /usr/lib/
 
@@ -88,12 +93,8 @@ COPY healthcheck.js /usr/local/share/healthcheck.js
 HEALTHCHECK --interval=1m --timeout=12s --start-period=30s \  
  CMD /usr/bin/node /usr/local/share/healthcheck.js
 
-# Add remco to image
-ENV REMCO_VER="0.11.1"
-RUN apk add --no-cache ca-certificates && \
-    wget https://github.com/HeavyHorst/remco/releases/download/v${REMCO_VER}/remco_${REMCO_VER}_linux_amd64.zip && \
-    unzip remco_${REMCO_VER}_linux_amd64.zip && rm remco_${REMCO_VER}_linux_amd64.zip && \
-    mv remco_linux /bin/remco
+# Get remco
+COPY --from=build-remco /go/bin/remco /bin/remco
 ADD remco /etc/remco
 
 # Environment vars to control config
