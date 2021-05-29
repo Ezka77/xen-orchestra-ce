@@ -42,9 +42,6 @@ jobs:
   docker-build:
     needs: pre-build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [ linux/amd64, linux/arm64, linux/arm/v7 ]
         
     steps:
       - 
@@ -65,18 +62,14 @@ jobs:
       -
         name: Build and push
         uses: docker/build-push-action@v2
-        env:
-          VERSION: ${{ needs.pre-build.outputs.version }}
-          XOSERVER: ${{ needs.pre-build.outputs.xoserver }}
-          XOWEB: ${{ needs.pre-build.outputs.xoweb }}
         with:
           context: alpine
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: |
             ezka77/xen-orchestra-ce:latest
             ezka77/xen-orchestra-ce:${{ needs.pre-build.outputs.version }}
           build-args: |
-            VERSION=${VERSION}
-            XOSERVER=${XOSERVER}
-            XOWEB=${XOWEB}
+            VERSION=${{ needs.pre-build.outputs.version }}
+            XOSERVER=${{ needs.pre-build.outputs.xoserver }}
+            XOWEB=${{ needs.pre-build.outputs.xoweb }}
