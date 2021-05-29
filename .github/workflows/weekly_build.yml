@@ -42,7 +42,15 @@ jobs:
   docker-build:
     needs: pre-build
     runs-on: ubuntu-latest
-        
+    strategy:
+      matrix:
+        platform: [ linux/amd64 ]
+    # matrix build works with arm64 and v7, but I think it requires to cache the
+    # artifacts and next make a manifest with all the docker images build and
+    # send them, otherwise the last image that finish overwrite the previous
+    # ones. 
+    # TODO: cache the artifacts images from this job and push them all
+    
     steps:
       - 
         name: Checkout
@@ -64,7 +72,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: alpine
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: ${{ matrix.platform }}
           push: true
           tags: |
             ezka77/xen-orchestra-ce:latest
