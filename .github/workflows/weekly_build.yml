@@ -42,6 +42,9 @@ jobs:
   docker-build:
     needs: pre-build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ linux/amd64, linux/arm64, linux/arm/v7 ]
         
     steps:
       - 
@@ -68,8 +71,8 @@ jobs:
           XOWEB: ${{ needs.pre-build.outputs.xoweb }}
         with:
           context: alpine
-          platforms: linux/amd64,linux/arm64
-          push: false
+          platforms: ${{ matrix.platform }}
+          push: true
           tags: |
             ezka77/xen-orchestra-ce:latest
             ezka77/xen-orchestra-ce:${{ needs.pre-build.outputs.version }}
