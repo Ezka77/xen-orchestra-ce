@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Find the merge commit for the version that you would like to build
+# The merge requests updating the XOA version is always titled “technical release”, so
+# use the following link to look for releases: https://github.com/vatesfr/xen-orchestra/pulls?q=is%3Apr+is%3Amerged+technical+release
+MERGE_COMMIT_GIT_REF=4186592 # 5.96.0 Server
+
+# Read the Server and Web versions out GitHub using the merge commit hash
+XOSERVER=$(curl -s https://raw.githubusercontent.com/vatesfr/xen-orchestra/${MERGE_COMMIT_GIT_REF}/packages/xo-server/package.json | python3 -c "import sys, json; print(json.load(sys.stdin)['version'])")
+XOWEB=$(curl -s https://raw.githubusercontent.com/vatesfr/xen-orchestra/${MERGE_COMMIT_GIT_REF}/packages/xo-web/package.json | python3 -c "import sys, json; print(json.load(sys.stdin)['version'])")
+VERSION=$(echo ${XOSERVER} | sed -rn 's/([[:digit:]]+\.[[:digit:]]+)\..*/\1/p')
+
+IMAGE_NAME=${IMAGE_NAME:-"ctcoss/xen-orchestra:$XO_SERVER_VERSION"}
+echo "[***] Building Xen Orchestra, Server version $XO_SERVER_VERSION as $IMAGE_NAME"
+
+docker build \
+    --build-arg GIT_REF=${MERGE_COMMIT_GIT_REF}   \
+    -t ${IMAGE_NAME} .

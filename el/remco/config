@@ -1,0 +1,24 @@
+log_level = "debug"
+log_format = "text"
+
+[default_backends]
+[default_backends.env]
+  onetime = true
+  keys = [ "/xo" ]
+
+[[resource]]
+name = "rpcbind"
+
+[resource.exec]
+  command = "rpcbind -f"
+
+[[resource]]
+name = "xo-server"
+
+[resource.exec]
+  command = "node dist/cli.mjs"
+  kill_timeout = 10
+
+[[resource.template]]
+  src = "/etc/remco/templates/config.toml"
+  dst = "/etc/xo-server/config.toml"
