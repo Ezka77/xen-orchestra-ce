@@ -1,8 +1,8 @@
-FROM node:14-alpine3.15 as build
+FROM node:alpine3.16 as build
 
 WORKDIR /home/node
 
-RUN apk add --no-cache git python2 g++ make bash
+RUN apk add --no-cache git python3 g++ make bash
 
 #fix error - url loader
 RUN npm install url-loader --save-dev
@@ -27,7 +27,7 @@ COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
 # VHDIMOUNT support
-FROM alpine:3.15 as build-libvhdi
+FROM alpine:3.16 as build-libvhdi
 
 WORKDIR /home/node
 RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
@@ -41,10 +41,10 @@ RUN cd libvhdi && ./synclibs.sh && \
     make install
 
 # REMCO
-FROM golang:1.17-alpine3.15 as build-remco
+FROM golang:alpine3.16 as build-remco
 
 RUN apk add --no-cache git
-RUN go get github.com/HeavyHorst/remco/cmd/remco
+RUN go install github.com/HeavyHorst/remco/cmd/remco@latest
 
 # Runner container
 FROM alpine:3.15
