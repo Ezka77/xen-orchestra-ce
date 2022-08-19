@@ -42,7 +42,9 @@ jobs:
   docker-build:
     needs: pre-build
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        platform: [ linux/amd64, linux/arm64 ]
     steps:
       - 
         name: Checkout
@@ -64,7 +66,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: alpine
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           push: true
           tags: |
             ezka77/xen-orchestra-ce:latest
