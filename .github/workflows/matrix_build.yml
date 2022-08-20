@@ -1,4 +1,4 @@
-name: Weekly Build
+name: Matrix multi-arch
 
 on:
   # once a week build a new image
