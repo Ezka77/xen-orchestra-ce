@@ -79,14 +79,23 @@ jobs:
   docker-manifest:
     needs: arch-build
     runs-on: ubuntu-latest
+    # find a way to use the needs.arch-build.matrix.arch to build the cmd line
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Docker create manifest multi-arch
+      - name: Docker create latest manifest multi-arch
         run: |
            docker manifest create ezka77/xen-orchestra-ce:latest \
-            --amend ezka77/xen-orchestra-ce:${{ needs.pre-build.outputs.version }}-amd64 \
-            --amend ezka77/xen-orchestra-ce:${{ needs.pre-build.outputs.version }}-arm64
+            --amend ezka77/xen-orchestra-ce:${{ pre-build.outputs.version }}-amd64 \
+            --amend ezka77/xen-orchestra-ce:${{ pre-build.outputs.version }}-arm64
+           docker manifest push create ezka77/xen-orchestra-ce:latest
+
+      - name: Docker create ${{ pre-build.outputs.version }} manifest multi-arch
+        run: |
+           docker manifest create ezka77/xen-orchestra-ce:${{ pre-build.outputs.version }} \
+            --amend ezka77/xen-orchestra-ce:${{ pre-build.outputs.version }}-amd64 \
+            --amend ezka77/xen-orchestra-ce:${{ pre-build.outputs.version }}-arm64
+           docker manifest push create ezka77/xen-orchestra-ce:${{ pre-build.outputs.version }}
