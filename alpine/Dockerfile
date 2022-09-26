@@ -2,7 +2,7 @@ FROM node:alpine3.16 as build
 
 WORKDIR /home/node
 
-RUN apk add --no-cache git python3 g++ make bash ntfs-3g curl
+RUN apk add --no-cache git python3 g++ make bash fuse curl
 
 #fix error - url loader
 RUN npm install url-loader --save-dev
