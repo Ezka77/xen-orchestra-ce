@@ -2,7 +2,7 @@ FROM node:alpine3.16 as build
 
 WORKDIR /home/node
 
-RUN apk add --no-cache git python3 g++ make bash fuse curl
+RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl
 
 #fix error - url loader
 RUN npm install url-loader --save-dev
@@ -79,6 +79,7 @@ RUN apk add --no-cache \
   nfs-utils \
   lvm2 \
   fuse \
+  fuse3 \
   gettext \
   cifs-utils \
   openssl \
