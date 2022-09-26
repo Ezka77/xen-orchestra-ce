@@ -2,7 +2,7 @@ FROM node:alpine3.16 as build
 
 WORKDIR /home/node
 
-RUN apk add --no-cache git python3 g++ make bash
+RUN apk add --no-cache git python3 g++ make bash ntfs-3g curl
 
 #fix error - url loader
 RUN npm install url-loader --save-dev
@@ -25,6 +25,14 @@ RUN cd /home/node/xen-orchestra &&\
 # plugins
 COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
+
+# try to clean some node_modules
+WORKDIR /home/node/xen-orchestra
+RUN npm install -g modclean
+RUN modclean -r
+
+RUN curl -sf https://gobinaries.com/tj/node-prune | sh
+RUN node-prune
 
 # VHDIMOUNT support
 FROM alpine:3.16 as build-libvhdi
