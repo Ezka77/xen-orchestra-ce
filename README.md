@@ -1,6 +1,6 @@
 # Xen-Orchestra-CE
 
-[![](https://img.shields.io/badge/xen--orchestra-master-green.svg)](https://xen-orchestra.com) [![Docker Pulls](https://img.shields.io/docker/pulls/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/repository/docker/ezka77/xen-orchestra-ce) ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/ezka77/xen-orchestra-ce) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/ezka77/xen-orchestra-ce/latest)
+[![](https://img.shields.io/badge/xen--orchestra-master-green.svg)](https://xen-orchestra.com) [![Docker Pulls](https://img.shields.io/docker/pulls/ezka77/xen-orchestra-ce.svg)](https://hub.docker.com/repository/docker/ezka77/xen-orchestra-ce) ![Build Status](https://github.com/Ezka77/xen-orchestra-ce/actions/workflows/weekly_build.yml/badge.svg) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/ezka77/xen-orchestra-ce/latest)
 
 Docker &amp; docker-compose files to deploy Xen Orchestra Community Edition (ie:
 from source). This image include all the officials Orchestra plugins builded
