@@ -47,7 +47,7 @@ RUN apk add --no-cache git
 RUN go install github.com/HeavyHorst/remco/cmd/remco@latest
 
 # Runner container
-FROM alpine:3.15
+FROM alpine:3.16
 
 ARG VERSION=latest
 ARG XOSERVER=latest
@@ -73,7 +73,8 @@ RUN apk add --no-cache \
   fuse \
   gettext \
   cifs-utils \
-  openssl
+  openssl \
+  ntfs-3g
 
 RUN mkdir -p /storage /etc/xo-server
 
