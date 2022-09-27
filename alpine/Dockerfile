@@ -3,9 +3,6 @@ FROM node:alpine3.16 as build-xoa
 WORKDIR /home/node
 
 RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl
-
-#fix error - url loader
-RUN npm install url-loader --save-dev
  
 # Clone git and remove .git
 RUN git clone -b master --depth 1 https://github.com/vatesfr/xen-orchestra/
@@ -16,11 +13,13 @@ RUN cd /home/node/xen-orchestra \
     && git apply patches/gh_issue_redirect.diff \
     && rm -rf /home/node/xen-orchestra/.git /home/node/xen-orchestra/patches
 
+#fix error - url loader
+RUN npm install url-loader
+
 # build
 WORKDIR /home/node/xen-orchestra
-RUN yarn config set network-timeout 300000
-RUN yarn
-RUN yarn build
+RUN npm install
+RUN npm build
 
 ##  ~ Experimental ~
 # clean node_modules steps
@@ -36,18 +35,17 @@ RUN modclean -r
 # remove unused files like docs, empty files... (scrap something like 25Mo)
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN node-prune
+# results:
+# xen-orchestra directory is about 500Mo after the build process, using theses
+# tools shrink it to something about 130Mo ==> there is no magics but it helps.
+# Overall the compressed image was around 220Mo before, and now it is below 130Mo.
+## 
 
 # plugins
 WORKDIR /home/node
 COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
-
-# results:
-# xen-orchestra directory is about 500Mo after the build process, using theses
-# tools shrink it to something about 130Mo ==> there is no magics but it helps.
-# Overall the compressed image was around 220Mo before, and now it is below 130Mo.
-## 
 
 # VHDIMOUNT support
 FROM alpine:3.16 as build-libvhdi
