@@ -5,9 +5,13 @@ on:
     inputs:
       build_target:
         required: true
-        type: string
+        type: choice
         default: build-xoa
         description: stop target from Dockefile
+        options:
+          - build-xoa
+          - build-libvhdi
+          - build-remco
 
 
 jobs:
@@ -67,7 +71,7 @@ jobs:
         with:
           context: alpine
           platforms: linux/arm64
-          target:  ${{ inputs.build_target }}
+          target:  ${{ github.event.inputs.build_target }}
           push: false
           tags: |
             ezka77/xen-orchestra-ce:latest
