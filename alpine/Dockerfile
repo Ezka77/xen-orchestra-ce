@@ -1,4 +1,4 @@
-FROM node:alpine3.16 as build
+FROM node:alpine3.16 as build-xoa
 
 WORKDIR /home/node
 
@@ -17,14 +17,10 @@ RUN cd /home/node/xen-orchestra \
     && rm -rf /home/node/xen-orchestra/.git /home/node/xen-orchestra/patches
 
 # build
-RUN cd /home/node/xen-orchestra &&\
-    yarn config set network-timeout 300000 &&\
-    yarn &&\
-    yarn build
-
-# plugins
-COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
-RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
+WORKDIR /home/node/xen-orchestra
+RUN yarn config set network-timeout 300000
+RUN yarn
+RUN yarn build
 
 ##  ~ Experimental ~
 # clean node_modules steps
@@ -41,6 +37,12 @@ RUN modclean -r
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN node-prune
 
+# plugins
+WORKDIR /home/node
+COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
+RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
+
+
 # results:
 # xen-orchestra directory is about 500Mo after the build process, using theses
 # tools shrink it to something about 130Mo ==> there is no magics but it helps.
@@ -55,11 +57,11 @@ RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev p
 
 RUN git clone https://github.com/libyal/libvhdi.git
 
-RUN cd libvhdi && ./synclibs.sh && \
-    ./autogen.sh && \
-    ./configure && \
-    make && \
-    make install
+WORKDIR /home/node/libvhdi
+RUN ./synclibs.sh
+RUN ./autogen.sh
+RUN ./configure
+RUN make && make install
 
 # REMCO
 FROM golang:alpine3.16 as build-remco
@@ -101,11 +103,11 @@ RUN apk add --no-cache \
 RUN mkdir -p /storage /etc/xo-server
 
 # Copy our App from the build container
-COPY --from=build /home/node/xen-orchestra /home/node/xen-orchestra
+COPY --from=build-xoa /home/node/xen-orchestra /home/node/xen-orchestra
 
 # Only copy over the node pieces we need from the above image
-COPY --from=build /usr/local/bin/node /usr/bin/
-COPY --from=build /usr/lib/libgcc* /usr/lib/libstdc* /usr/lib/
+COPY --from=build-xoa /usr/local/bin/node /usr/bin/
+COPY --from=build-xoa /usr/lib/libgcc* /usr/lib/libstdc* /usr/lib/
 
 # Get libvhdi
 COPY --from=build-libvhdi /usr/local/bin/vhdimount /usr/local/bin/vhdiinfo  /usr/local/bin/
