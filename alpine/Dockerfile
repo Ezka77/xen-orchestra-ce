@@ -14,12 +14,13 @@ RUN cd /home/node/xen-orchestra \
     && rm -rf /home/node/xen-orchestra/.git /home/node/xen-orchestra/patches
 
 #fix error - url loader
-RUN npm install url-loader
+RUN npm install --prefer-offline --no-audit --no-fund url-loader
 
 # build
 WORKDIR /home/node/xen-orchestra
-RUN npm install
-RUN npm build
+RUN npm config set network-timeout 300000
+RUN npm install --prefer-offline --no-audit --no-fund
+RUN npm run build
 
 ##  ~ Experimental ~
 # clean node_modules steps
@@ -29,7 +30,7 @@ WORKDIR /home/node/xen-orchestra
 RUN npm prune --omit=dev
 
 # remove some more things (remove something like 35Mo)
-RUN npm install -g modclean
+RUN npm install -g --prefer-offline --no-audit --no-fund modclean
 RUN modclean -r
 
 # remove unused files like docs, empty files... (scrap something like 25Mo)
