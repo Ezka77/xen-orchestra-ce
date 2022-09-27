@@ -29,20 +29,22 @@ RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 ##  ~ Experimental ~
 # clean node_modules steps
 WORKDIR /home/node/xen-orchestra
+# from npm doc remove extraneous modules for production (as before we build with
+# the dev dependencies it remove a lot! after this step the size is around 200Mo)
+RUN npm prune --omit=dev
+
+# remove some more things (remove something like 35Mo)
 RUN npm install -g modclean
 RUN modclean -r
 
-# remove unused files
+# remove unused files like docs, empty files... (scrap something like 25Mo)
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN node-prune
 
 # results:
 # xen-orchestra directory is about 500Mo after the build process, using theses
-# tools shrink it to something about 360Mo ==> there is no magics but it helps.
-# Overall the compressed image was around 220Mo before, and now it is 190Mo. I
-# think that because node_modules are mainly text files the gzip compression
-# ratio is over > 70% (which is huge) and in the end with the compressed image,
-# the gain is only 30Mo.
+# tools shrink it to something about 130Mo ==> there is no magics but it helps.
+# Overall the compressed image was around 220Mo before, and now it is below 130Mo.
 ## 
 
 # VHDIMOUNT support
