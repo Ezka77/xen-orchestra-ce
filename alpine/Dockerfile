@@ -26,13 +26,24 @@ RUN cd /home/node/xen-orchestra &&\
 COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
-# try to clean some node_modules
+##  ~ Experimental ~
+# clean node_modules steps
 WORKDIR /home/node/xen-orchestra
 RUN npm install -g modclean
 RUN modclean -r
 
+# remove unused files
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN node-prune
+
+# results:
+# xen-orchestra directory is about 500Mo after the build process, using theses
+# tools shrink it to something about 360Mo ==> there is no magics but it helps.
+# Overall the compressed image was around 220Mo before, and now it is 190Mo. I
+# think that because node_modules are mainly text files the gzip compression
+# ratio is over > 70% (which is huge) and in the end with the compressed image,
+# the gain is only 30Mo.
+## 
 
 # VHDIMOUNT support
 FROM alpine:3.16 as build-libvhdi
