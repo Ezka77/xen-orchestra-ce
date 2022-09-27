@@ -61,6 +61,7 @@ jobs:
         with:
           context: alpine
           platforms: linux/arm64
+          target: build-xoa
           push: false
           tags: |
             ezka77/xen-orchestra-ce:latest
