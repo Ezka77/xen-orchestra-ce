@@ -2,6 +2,12 @@ name: ARM64 Build
 
 on:
   workflow_dispatch:
+    inputs:
+      build_target:
+        required: true
+        type: string
+        default: build-xoa
+        description: stop target from Dockefile
 
 
 jobs:
@@ -61,7 +67,7 @@ jobs:
         with:
           context: alpine
           platforms: linux/arm64
-          target: build-xoa
+          target:  ${{ inputs.build_target }}
           push: false
           tags: |
             ezka77/xen-orchestra-ce:latest
