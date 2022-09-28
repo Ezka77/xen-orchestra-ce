@@ -5,7 +5,7 @@ WORKDIR /home/node
 RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl
  
 # Clone git and remove .git
-RUN git clone -b master --depth 1 https://github.com/vatesfr/xen-orchestra/
+RUN git clone -b fix_fuse_dependancy_arm --depth 1 https://github.com/vatesfr/xen-orchestra/
 
 # patches
 COPY patches /home/node/xen-orchestra/patches
@@ -19,7 +19,7 @@ RUN npm install --prefer-offline --no-audit --no-fund url-loader
 # build
 WORKDIR /home/node/xen-orchestra
 RUN npm config set network-timeout 300000
-RUN npm install --prefer-offline --no-audit --no-fund
+RUN npm install --prefer-offline --no-audit --no-fund --loglevel verbose
 RUN npm run build
 
 ##  ~ Experimental ~
@@ -27,7 +27,7 @@ RUN npm run build
 WORKDIR /home/node/xen-orchestra
 # from npm doc remove extraneous modules for production (as before we build with
 # the dev dependencies it remove a lot! after this step the size is around 200Mo)
-RUN npm prune --omit=dev
+RUN npm prune --omit=dev --loglevel verbose
 
 # remove some more things (remove something like 35Mo)
 RUN npm install -g --prefer-offline --no-audit --no-fund modclean
