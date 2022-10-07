@@ -80,9 +80,10 @@ services:
       - XO_HTTPS_LISTEN_PORT=443
       - XO_HTTPS_LISTEN_AUTOCERT=true
     #privileged: true
-    # SYS_ADMIN should be enough capability to use NFS mount
+    # to avoid privileged, use SYS_ADMIN to get mount capability, and NET_ADMIN to open/configure some sockets for NFS
     cap_add:
       - SYS_ADMIN
+      - NET_ADMIN
     volumes:
       - xo-data:/storage
     logging: &default_logging
