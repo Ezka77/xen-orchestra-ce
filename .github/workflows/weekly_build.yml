@@ -1,7 +1,7 @@
 name: Weekly Build
 
 on:
-  # once a week build a new image
+  # once a week build a new image: At 02:30 on Monday.
   schedule:
     - cron: "30 2 * * 1"
   # or manually
@@ -21,10 +21,10 @@ jobs:
     steps:
       - 
         name: Add python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.3.0
       - 
         name: Checkout scripts
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
       -
         name: Get XOA server version
         id: xoa-version
@@ -46,22 +46,22 @@ jobs:
     steps:
       - 
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2.1.0
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2.2.1
       -
         name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2.1.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3.2.0
         with:
           context: alpine
           platforms: linux/amd64
