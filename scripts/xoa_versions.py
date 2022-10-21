@@ -12,7 +12,7 @@ def env_push(k, url):
     # echo "version=$VERSION" >> $GITHUB_OUTPUT
     try:
         with open(os.environ["GITHUB_OUTPUT"], "a") as output:
-            output.write(f"{k}={resp['version']}")
+            output.write(f"{k}={resp['version']}\n")
     except KeyError as error:
         print(err)
         raise
