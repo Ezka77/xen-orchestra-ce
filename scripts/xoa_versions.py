@@ -9,7 +9,13 @@ urls = {
 def env_push(k, url):
     with urlopen(url) as f:
         resp = json.load(f)
-    print(f"::set-output name={k}::{resp['version']}")
+    # echo "version=$VERSION" >> $GITHUB_OUTPUT
+    try:
+        with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+            output.write(f"{k}={resp['version']}")
+    except KeyError as error:
+        print(err)
+        raise
 
 try:
     for k, v in urls.items():
