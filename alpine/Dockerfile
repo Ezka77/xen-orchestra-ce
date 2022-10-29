@@ -1,4 +1,4 @@
-FROM node:alpine3.16 as build-xoa
+FROM node:18-alpine3.15 as build-xoa
 
 WORKDIR /home/node
 
