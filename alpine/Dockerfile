@@ -1,8 +1,8 @@
-FROM node:18-alpine3.15 as build-xoa
+FROM node:18-alpine3.17 as build-xoa
 
 WORKDIR /home/node
 
-RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl
+RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl libc6-compat
 
 #fix error - url loader
 RUN npm install url-loader --save-dev
@@ -50,7 +50,7 @@ RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 ## 
 
 # VHDIMOUNT support
-FROM alpine:3.16 as build-libvhdi
+FROM alpine:3.17 as build-libvhdi
 
 WORKDIR /home/node
 RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
@@ -64,13 +64,13 @@ RUN ./configure
 RUN make && make install
 
 # REMCO
-FROM golang:alpine3.16 as build-remco
+FROM golang:alpine3.17 as build-remco
 
 RUN apk add --no-cache git
 RUN go install github.com/HeavyHorst/remco/cmd/remco@latest
 
 # Runner container
-FROM alpine:3.16
+FROM alpine:3.17
 
 ARG VERSION=latest
 ARG XOSERVER=latest
