@@ -7,6 +7,7 @@ PACKAGES_DIR=/home/node/xen-orchestra/packages
 PLUGINS="xo-server-auth-github \
 xo-server-auth-google \
 xo-server-auth-ldap \
+xo-server-auth-oidc \
 xo-server-auth-saml \
 xo-server-backup-reports \
 xo-server-load-balancer \
