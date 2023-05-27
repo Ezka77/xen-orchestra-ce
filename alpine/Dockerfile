@@ -1,8 +1,13 @@
-FROM node:18-alpine3.17 as build-xoa
+## Builder base
+FROM node:18-alpine3.17 as builder
+
+RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl libc6-compat \
+ automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
+
+## XOA Builder
+FROM builder as build-xoa
 
 WORKDIR /home/node
-
-RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl libc6-compat
 
 #fix error - url loader
 RUN npm install url-loader --save-dev
@@ -27,7 +32,7 @@ RUN yarn build
 WORKDIR /home/node/xen-orchestra
 # from npm doc remove extraneous modules for production (as before we build with
 # the dev dependencies it remove a lot! after this step the size is around 200Mo)
-RUN npm prune --omit=dev
+RUN npm prune --omit=dev --force
 
 # remove some more things (remove something like 35Mo)
 RUN npm install -g modclean
@@ -50,7 +55,7 @@ RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 ## 
 
 # VHDIMOUNT support
-FROM alpine:3.17 as build-libvhdi
+FROM builder as build-libvhdi
 
 WORKDIR /home/node
 RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
