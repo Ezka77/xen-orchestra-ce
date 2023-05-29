@@ -1,6 +1,5 @@
-## Builder base
+## Use same builder image for XOA & libvhdi
 FROM node:18-alpine3.17 as builder
-
 RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl libc6-compat \
  automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
 
@@ -8,19 +7,15 @@ RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev c
 FROM builder as build-xoa
 
 WORKDIR /home/node
-
 #fix error - url loader
 RUN npm install url-loader --save-dev
- 
 # Clone git and remove .git
 RUN git clone -b master --depth 1 https://github.com/vatesfr/xen-orchestra/
-
 # patches
 COPY patches /home/node/xen-orchestra/patches
 RUN cd /home/node/xen-orchestra \
     && git apply patches/gh_issue_redirect.diff \
     && rm -rf /home/node/xen-orchestra/.git /home/node/xen-orchestra/patches
-
 # build
 WORKDIR /home/node/xen-orchestra
 RUN yarn config set network-timeout 300000
@@ -33,21 +28,18 @@ WORKDIR /home/node/xen-orchestra
 # from npm doc remove extraneous modules for production (as before we build with
 # the dev dependencies it remove a lot! after this step the size is around 200Mo)
 RUN npm prune --omit=dev --force
-
 # remove some more things (remove something like 35Mo)
 RUN npm install -g modclean
 RUN modclean -r
-
 # remove unused files like docs, empty files... (scrap something like 25Mo)
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN node-prune
+## ~ End of Experimental part
 
 # plugins
 WORKDIR /home/node
 COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
-
-
 # results:
 # xen-orchestra directory is about 500Mo after the build process, using theses
 # tools shrink it to something about 130Mo ==> there is no magics but it helps.
@@ -58,8 +50,6 @@ RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 FROM builder as build-libvhdi
 
 WORKDIR /home/node
-RUN apk add --no-cache git g++ make bash automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
-
 RUN git clone https://github.com/libyal/libvhdi.git
 
 WORKDIR /home/node/libvhdi
