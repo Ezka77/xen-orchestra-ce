@@ -16,6 +16,11 @@ services:
         # SYS_ADMIN should be enough capability to use NFS mount
         cap_add:
           - SYS_ADMIN
+        # LVM 
+        devices:
+            - "/dev/fuse:/dev/fuse"
+            - "/dev/loop-control:/dev/loop-control"
+        #     - "/dev/loop0:/dev/loop0"
         volumes:
             - xo-data:/storage
         logging: &default_logging

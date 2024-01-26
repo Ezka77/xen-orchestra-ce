@@ -12,19 +12,19 @@ See https://xen-orchestra.com for information on Xen Orchestra
 
 ### With Docker-Compose
 
-The most simple way is to use docker-compose. Redis is not in this docker, so we
+The most simple way is to use `docker compose`. Redis is not in this docker, so we
 need to connect XOA-CE to a Redis database, the docker-compose file in the github
 repos will take care of this and assure persistance.
 
 ```
 git clone https://github.com/Ezka77/xen-orchestra-ce.git
-docker-compose up
+docker compose up
 ```
 
 or just use the docker compose file ([direct link](https://raw.githubusercontent.com/Ezka77/xen-orchestra-ce/master/docker-compose.yml)):
 ```
 curl -o docker-compose.yml https://raw.githubusercontent.com/Ezka77/xen-orchestra-ce/master/docker-compose.yml
-docker-compose up
+docker compose up
 ```
 
 Xen Orchestra should be available on: http://localhost:8000
