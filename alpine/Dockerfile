@@ -41,11 +41,6 @@ RUN node-prune
 # Overall the compressed image was around 220Mo before, and now it is below 130Mo.
 ## 
 
-# plugins
-WORKDIR /home/node
-COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
-RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
-
 # VHDIMOUNT support
 FROM builder as build-libvhdi
 
