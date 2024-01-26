@@ -35,16 +35,16 @@ RUN modclean -r
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN node-prune
 ## ~ End of Experimental part
-
-# plugins
-WORKDIR /home/node
-COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
-RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 # results:
 # xen-orchestra directory is about 500Mo after the build process, using theses
 # tools shrink it to something about 130Mo ==> there is no magics but it helps.
 # Overall the compressed image was around 220Mo before, and now it is below 130Mo.
 ## 
+
+# plugins
+WORKDIR /home/node
+COPY link_plugins.sh /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
+RUN /home/node/xen-orchestra/packages/xo-server/link_plugins.sh
 
 # VHDIMOUNT support
 FROM builder as build-libvhdi
@@ -93,7 +93,8 @@ RUN apk add --no-cache \
   gettext \
   cifs-utils \
   openssl \
-  ntfs-3g
+  ntfs-3g \
+  lvm2
 
 RUN mkdir -p /storage /etc/xo-server
 
