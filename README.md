@@ -48,6 +48,8 @@ The xen-orchestra container is easy to configure via multiple environment variab
 These environment variables are used by `remco` to enabled the HTTPS support:
 ```
 # Quick HTTPS set up
+XO_HTTP_COOKIES_SAMESITE : Set the value of the 'SameSite' attribute on cookies (default = unset, possible values: [true, 'lax', 'none', 'strict'])
+XO_HTTP_COOKIES_SECURE : Set the 'Secure' attribute on cookies (must use HTTPS to connect if set to true) (default = unset)
 XO_HTTP_REDIRECTTOHTTPS : Redirect HTTP to HTTPS (default = false)
 XO_HTTP_LISTEN_PORT : HTTP listen port (default = 8000)
 XO_HTTPS_LISTEN_PORT : HTTPS listen port (default = unset)
