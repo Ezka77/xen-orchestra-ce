@@ -63,8 +63,12 @@ redirectToHttps = {{ getv("/xo/http/redirecttohttps", "false") }}
 #
 # See https://www.npmjs.com/package/cookie#options-1
 [http.cookies]
-#sameSite = true
-#secure = true
+{% if exists("/xo/http/cookies/samesite") %}
+sameSite = {{ getv("/xo/http/cookies/samesite") }}
+{% endif %}
+{% if exists("/xo/http/cookies/secure") %}
+secure = {{ getv("/xo/http/cookies/secure") }}
+{% endif %}
 
 # Basic HTTP.
 [[http.listen]]
