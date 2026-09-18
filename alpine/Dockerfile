@@ -1,5 +1,5 @@
 ## Use same builder image for XOA & libvhdi
-FROM node:22.22-alpine3.23 as builder
+FROM node:22-alpine3.24 as builder
 RUN apk add --no-cache git python3 g++ make bash fuse fuse-dev fuse3 fuse3-dev curl libc6-compat \
  automake autoconf libtool gettext-dev pkgconf fuse-dev fuse
 
